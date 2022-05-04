@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "start:web": "./node_modules/serve/bin/serve.js ./public/",
     "build": "yarn encore dev",
     "deploy": "gh-pages -d public",
     "jsdoc": "./node_modules/jsdoc/jsdoc.js -c ./.jsdoc.json"
@@ -17,8 +18,8 @@
     "regenerator-runtime": "^0.13.9",
     "sass": "^1.51.0",
     "sass-loader": "^12.6.0",
+    "serve": "^13.0.2",
     "vue": "^3.2.33",
-    "vue-loader": "^16.7.0",
-    "vuex": "^4.0.2"
+    "vue-loader": "^16.7.0"
   }
 }

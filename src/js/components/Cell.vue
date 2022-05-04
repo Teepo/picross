@@ -2,28 +2,18 @@
     <div :class="{
         'cell'               : true,
         'cell--is-selected'  : this.isSelected,
-    }" @click="clickHandler">
-        <component :is="getPieceComponent()" :cell="this" />
-    </div>
+    }" @click="clickHandler"></div>
 </template>
 
 <script>
 
 import { mapGetters } from 'vuex';
 
-import EmptyPiece from './pieces/EmptyPiece';
-
 export default {
-
-    components : { EmptyPiece },
 
     props: {
         _x : { type : Number,  required : true },
         _y : { type : Number,  required : true },
-    },
-
-    computed : {
-        ...mapGetters(['board'])
     },
 
     data : function() {
@@ -40,18 +30,6 @@ export default {
     },
 
     methods : {
-
-        getPieceComponent() {
-            return this.piece?.name ?? this.board[this.x][this.y];
-        },
-
-        hasPiece() {
-            return this.getPieceComponent() !== 'EmptyPiece';
-        },
-
-        updatePiece(piece) {
-            this.piece = piece;
-        },
 
         clickHandler() {
         }
