@@ -1,5 +1,10 @@
 @import 'reset';
 
+$cellSize: 30px;
+
+$red: #f65c5c;
+$selected: #2f425b;
+
 body {
     font-family: Arial;
     font-size: 16px;
@@ -7,32 +12,130 @@ body {
     margin: 0;
     padding: 0;
 
-    background-color: #212121;
-
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
+}
+
+app {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+audio {
+    display: none;
 }
 
 .grid {
 
     display: grid;
-    grid-template-columns: repeat(15, 50px);
-    grid-template-rows: repeat(15, 50px);
+    grid-template-columns: repeat(15, $cellSize);
+    grid-template-rows: repeat(15, $cellSize);
 
-    width: 50rem;
-    height: 50rem;
+    border: 2px solid #333;
+    border-radius: 5px;
 
+    overflow: hidden;
     box-sizing: border-box;
 }
 
 .cell {
-    width: 50px;
-    height: 50px;
+
+    position: relative;
+    
+    width: $cellSize;
+    height: $cellSize;
+    
     background-color: #fff;
     border: 1px solid #bec5d4;
+    transition: .2s background-color ease-in-out;
+    
     cursor: pointer;
+
+    &--is-selected {
+        background-color: $selected;
+    }
+
+    &--is-crossed {
+        background-image: url('/src/svg/cross.svg');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: 100%;
+    }
+
+    &--with-h-border {
+        border-left: 2px solid #333;
+    }
+
+    &--with-v-border {
+        border-top: 2px solid #333;
+    }
+
+    &--has-error {    
+        &:before {
+            
+            content: '';
+            
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba($red, .5);
+            animation: animationPulse 1.5s alternate;
+            z-index: 1;
+        }
+    }
+
+    &--has-s-error {
+        animation: animationSError 1.5s alternate;
+    }
+
+    &--has-c-error {
+        animation: animationCError 1.5s alternate;
+    }    
 }
 
 .u-icon {
     pointer-events: none;
 }
+
+@keyframes animationSError {
+    0% {
+        background-color: #fff;
+    }
+    33% {
+        background-color: $red;
+    }
+    100% {
+        background-color: $selected;
+    }
+}
+
+@keyframes animationCError {
+    0% {
+        background-color: #fff;
+    }
+    33% {
+        background-color: $red;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+
+@keyframes animationPulse {
+    0% {
+        transform: scale(.9);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 15px rgba($red, 0);
+    }
+    100% {
+        transform: scale(.9);
+        box-shadow: 0 0 0 0 rgba($red, 0);
+    }
+  }
