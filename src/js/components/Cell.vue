@@ -102,17 +102,14 @@ export default {
                 }
             }
 
-            // play sound only after action
-            // ( prevent unallowed Media API warning while user didn't interact with browser)
-            if (this.isSelected || this.isCrossed) {
-                AudioManager.play('se_click');
-            }
-            
             if (this.hasError) {
                 
                 AudioManager.play('se_error');
 
                 this.$parent.lifeLeft--;
+            }
+            else if (this.isSelected || this.isCrossed) {
+                AudioManager.play('se_click');
             }
 
             if (type === 'click' || type === 'contextmenu') {
