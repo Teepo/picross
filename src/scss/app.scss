@@ -16,12 +16,6 @@ body {
     font-smoothing: antialiased;
 }
 
-app {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
 audio {
     display: none;
 }
@@ -37,6 +31,12 @@ audio {
 
     overflow: hidden;
     box-sizing: border-box;
+
+    &-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }
 
 .cell {
@@ -98,8 +98,27 @@ audio {
     }    
 }
 
+.lifes {
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    margin: 50px 0;
+}
+
 .u-icon {
     pointer-events: none;
+}
+
+.u-icon-heart {
+
+    margin: 0 5px;
+
+    width: 50px;
+    height: 50px;
+
+    fill: $red;
 }
 
 @keyframes animationSError {

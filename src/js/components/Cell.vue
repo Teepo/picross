@@ -1,17 +1,21 @@
 <template>
     <div :class="{
         'cell'                : true,
+        
         'cell--is-selected'   : this.isSelected,
         'cell--is-crossed'    : this.isCrossed,
+        
         'cell--has-error'     : this.hasError,
         'cell--has-s-error'   : this.hasError && this.isSelected,
         'cell--has-c-error'   : this.hasError && this.isCrossed,
+        
         'cell--with-h-border' : (this.y % 5) === 0 && this.y > 0,
         'cell--with-v-border' : (this.x % 5) === 0 && this.x > 0,
     }"
     @click="clickHandler"
     @contextmenu="clickHandler"
-    @mouseenter="clickHandler"></div>
+    @mouseenter="clickHandler"
+    ref="cells"></div>
 </template>
 
 <script>
@@ -36,6 +40,23 @@ export default {
             x : this._x,
             y : this._y,
         };
+    },
+
+    mounted() {
+
+        if (!this.$root.cells) {
+            this.$root.cells = [];
+        }
+
+        if (!this.$root.cells[this.x]) {
+            this.$root.cells[this.x] = [];
+        }
+
+        if (!this.$root.cells[this.x][this.y]) {
+            this.$root.cells[this.x][this.y] = null;
+        }
+
+        this.$root.cells[this.x][this.y] = this;
     },
 
     methods : {
@@ -88,7 +109,37 @@ export default {
             }
             
             if (this.hasError) {
+                
                 AudioManager.play('se_error');
+
+                this.$parent.lifeLeft--;
+            }
+
+            if (type === 'click' || type === 'contextmenu') {
+                this.checkIfBoardIsCleared();
+            }
+        },
+
+        checkIfBoardIsCleared() {
+
+            let validCellCount    = 0;
+            let revealedCellCount = 0;
+
+            for (let x in [...Array(this.$root.gridSize.x)]) {
+                for (let y in [...Array(this.$root.gridSize.y)]) {
+
+                    if (this.$root.board[x][y] === 1) {
+                        validCellCount++;
+                    }
+
+                    if (this.$root.cells[x][y].isSelected || this.$root.cells[x][y].isCrossed) {
+                        revealedCellCount++;
+                    }
+                }
+            }
+
+            if (validCellCount === revealedCellCount) {
+                console.log('CLEAR');
             }
         }
     }

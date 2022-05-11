@@ -23,6 +23,8 @@ Encore
 		exclude : [],
 	})
 
+	.enablePostCssLoader()
+
 	.enableSassLoader()
 
 	.enableVueLoader()
