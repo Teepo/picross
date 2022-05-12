@@ -15,14 +15,20 @@
     @click="clickHandler"
     @contextmenu="clickHandler"
     @mouseenter="clickHandler"
-    ref="cells"></div>
+    ref="cells">
+        <Svg name="cross" v-if="this.isCrossed" />
+    </div>
 </template>
 
 <script>
 
+import Svg from './Svg';
+
 import { AudioManager } from './../modules/AudioManager';
 
 export default {
+
+    components : { Svg },
 
     props: {
         _x : { type : Number,  required : true },
