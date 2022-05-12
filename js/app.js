@@ -22627,16 +22627,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.hasError) {
         if (this.isSelected && board[this.x][this.y] === 0) {
           this.hasError = true;
+          this.isSelected = false;
+          this.isCrossed = true;
         }
 
         if (this.isCrossed && board[this.x][this.y] === 1) {
           this.hasError = true;
+          this.isSelected = true;
+          this.isCrossed = false;
         }
       }
 
       if (this.hasError) {
         _modules_AudioManager__WEBPACK_IMPORTED_MODULE_0__.AudioManager.play('se_error');
-        console.log('');
         this.$emit('decrease-life');
       } else if (this.isSelected || this.isCrossed) {
         _modules_AudioManager__WEBPACK_IMPORTED_MODULE_0__.AudioManager.play('se_click');
