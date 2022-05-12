@@ -22550,7 +22550,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _modules_AudioManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../modules/AudioManager */ "./src/js/modules/AudioManager.js");
+/* harmony import */ var _Svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Svg */ "./src/js/components/Svg.vue");
+/* harmony import */ var _modules_AudioManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../modules/AudioManager */ "./src/js/modules/AudioManager.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -22564,7 +22565,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    Svg: _Svg__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   props: {
     _x: {
       type: Number,
@@ -22639,10 +22644,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       if (this.hasError) {
-        _modules_AudioManager__WEBPACK_IMPORTED_MODULE_0__.AudioManager.play('se_error');
+        _modules_AudioManager__WEBPACK_IMPORTED_MODULE_1__.AudioManager.play('se_error');
         this.$emit('decrease-life');
       } else if (this.isSelected || this.isCrossed) {
-        _modules_AudioManager__WEBPACK_IMPORTED_MODULE_0__.AudioManager.play('se_click');
+        _modules_AudioManager__WEBPACK_IMPORTED_MODULE_1__.AudioManager.play('se_click');
       }
 
       if (type === 'click' || type === 'contextmenu') {
@@ -22810,6 +22815,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_Svg = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Svg");
+
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'cell': true,
@@ -22831,7 +22838,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.clickHandler && $options.clickHandler.apply($options, arguments);
     }),
     ref: "cells"
-  }, null, 34
+  }, [this.isCrossed ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Svg, {
+    key: 0,
+    name: "cross"
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 34
   /* CLASS, HYDRATE_EVENTS */
   );
 }

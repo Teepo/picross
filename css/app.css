@@ -92,12 +92,6 @@ audio {
 .cell--is-selected {
   background-color: #2f425b;
 }
-.cell--is-crossed {
-  background-image: url(/images/cross.56160ff1.svg);
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position: 100%;
-}
 .cell--with-h-border {
   border-left: 2px solid #333;
 }
@@ -135,6 +129,11 @@ audio {
 
 .u-icon {
   pointer-events: none;
+}
+
+.u-icon-cross {
+  width: 30px;
+  height: 30px;
 }
 
 .u-icon-heart {
