@@ -94,19 +94,25 @@ export default {
             if (!this.hasError) {
                 
                 if (this.isSelected && board[this.x][this.y] === 0) {
+
                     this.hasError = true;
+
+                    this.isSelected = false;
+                    this.isCrossed  = true;
                 }
 
                 if (this.isCrossed && board[this.x][this.y] === 1) {
+
                     this.hasError = true;
+
+                    this.isSelected = true;
+                    this.isCrossed  = false;
                 }
             }
 
             if (this.hasError) {
                 
                 AudioManager.play('se_error');
-
-                console.log('');
 
                 this.$emit('decrease-life');
             }
