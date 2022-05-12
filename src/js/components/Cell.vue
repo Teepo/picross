@@ -106,7 +106,9 @@ export default {
                 
                 AudioManager.play('se_error');
 
-                this.$parent.lifeLeft--;
+                console.log('');
+
+                this.$emit('decrease-life');
             }
             else if (this.isSelected || this.isCrossed) {
                 AudioManager.play('se_click');

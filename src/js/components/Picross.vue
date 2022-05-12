@@ -2,7 +2,7 @@
     
     <div class="lifes">
         <template v-for="x in [...Array(this.lifeCount)]" :key="x">
-            <Svg name="heart" />
+            <Life ref="hearts" />
         </template>
     </div>
     
@@ -12,6 +12,7 @@
                 <Cell
                     v-for="(item, y) in [...Array(this.gridSize.y)]"
                     :key="y" :_x="x" :_y="y"
+                    @decrease-life="decreaseLifeHandler"
                 />
             </template>
         </div>
@@ -21,12 +22,11 @@
 <script>
 
 import Cell from './Cell';
-
-import Svg from './Svg';
+import Life from './Life';
 
 export default {
 
-    components : { Cell, Svg },
+    components : { Cell, Life },
 
     data() {
         
@@ -65,6 +65,25 @@ export default {
         
         this.$root.lifeCount = this.lifeCount;
         this.$root.lifeLeft  = this.lifeLeft;
+    },
+
+    methods: {
+
+        decreaseLifeHandler() {
+
+            console.log('decreaseLifeHandler', this);
+
+            this.lifeLeft--;
+
+            const heart = this.$refs.hearts[this.lifeLeft] ?? null;
+
+            heart && (heart.isDisabled = true);
+
+            if (this.lifeLeft <= 0) {
+                console.log('GAME OVER');
+                return;
+            }
+        }
     }
 }
 
