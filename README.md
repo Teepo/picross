@@ -1,9 +1,19 @@
-# Chess
+# picross
 
-## Installation
-
-```js
-npm install
-npm run start
+## Project setup
 ```
-Run your favorite browser and go to http://localhost:5000
+yarn install
+```
+
+### Compiles and hot-reloads for development
+```
+yarn serve
+```
+
+### Compiles and minifies for production
+```
+yarn build
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

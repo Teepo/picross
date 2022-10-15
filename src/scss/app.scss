@@ -1,4 +1,5 @@
 @import 'reset';
+@import "~bootstrap";
 
 $cellSize: 30px;
 
@@ -6,14 +7,11 @@ $red: #f65c5c;
 $selected: #2f425b;
 
 body {
-    font-family: Arial;
-    font-size: 16px;
-
-    margin: 0;
-    padding: 0;
-
-    -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 audio {
