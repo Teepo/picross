@@ -1,0 +1,184 @@
+@import 'reset';
+@import "~bootstrap";
+
+$cellSize: 30px;
+
+$red: #f65c5c;
+$selected: #2f425b;
+
+body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+audio {
+    display: none;
+}
+
+.grid {
+
+    display: grid;
+    grid-template-columns: repeat(15, $cellSize);
+    grid-template-rows: repeat(15, $cellSize);
+
+    border: 2px solid #333;
+    border-radius: 5px;
+
+    overflow: hidden;
+    box-sizing: border-box;
+
+    &-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+.cell {
+
+    position: relative;
+    
+    width: $cellSize;
+    height: $cellSize;
+    
+    background-color: #fff;
+    border: 1px solid #bec5d4;
+    transition: .2s background-color ease-in-out;
+    
+    cursor: pointer;
+
+    &--is-selected {
+        background-color: $selected;
+    }
+
+    &--with-h-border {
+        border-left: 2px solid #333;
+    }
+
+    &--with-v-border {
+        border-top: 2px solid #333;
+    }
+
+    &--has-error {    
+        &:before {
+            
+            content: '';
+            
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba($red, .5);
+            animation: animationPulse 1.5s alternate;
+            z-index: 1;
+        }
+    }
+
+    &--has-s-error {
+        animation: animationSError 1.5s alternate;
+    }
+
+    &--has-c-error {
+        animation: animationCError 1.5s alternate;
+    }    
+}
+
+.lifes {
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    margin: 50px 0;
+}
+
+.u-icon {
+    pointer-events: none;
+}
+
+.u-icon-cross {
+    width: 30px;
+    height: 30px;
+}
+
+.u-icon-heart {
+
+    margin: 0 5px;
+
+    width: 50px;
+    height: 50px;
+
+    fill: $red;
+
+    transition: fill .2s ease-in-out,
+                stroke .2s ease-in-out;
+
+    
+    &.is-disabled {
+        animation: animationHeartShaking 2s forwards;
+    }
+}
+
+@keyframes animationHeartShaking {
+    0%        { transform: translate(0, 0); }
+    1%  { transform: translate(10px, 0); }
+    3%  { transform: translate(0, 0); }
+    5%  { transform: translate(10x, 0); }
+    7%  { transform: translate(0, 0); }
+    9%  { transform: translate(10px, 0); }
+    11% { transform: translate(0, 0); }
+    13% { transform: translate(10px, 0); }
+    15% { transform: translate(0, 0); }
+    50%, 100% {
+        
+        transform: translate(0, 0);
+        
+        fill: #ecedf6;
+        stroke: #bec5d4;
+        stroke-width: 20px;
+    }
+}
+
+@keyframes animationSError {
+    0% {
+        background-color: #fff;
+    }
+    33% {
+        background-color: $red;
+    }
+    100% {
+        background-color: $selected;
+    }
+}
+
+@keyframes animationCError {
+    0% {
+        background-color: #fff;
+    }
+    33% {
+        background-color: $red;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+
+@keyframes animationPulse {
+    0% {
+        transform: scale(.9);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 15px rgba($red, 0);
+    }
+    100% {
+        transform: scale(.9);
+        box-shadow: 0 0 0 0 rgba($red, 0);
+    }
+  }
