@@ -18,7 +18,31 @@ audio {
     display: none;
 }
 
-.grid {
+.tasks {
+    display: flex;
+    color: #282544;
+}
+
+.task {
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: system-ui;
+
+    background-color: #ebeff8;
+    border-radius: 5px;
+}
+
+.tasks-v {
+    .task {
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        width: 30px;
+        margin: 0 .1px;
+    }
+}
+
+.cells {
 
     display: grid;
     grid-template-columns: repeat(15, $cellSize);

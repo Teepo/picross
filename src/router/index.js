@@ -1,13 +1,19 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 import Home from './../views/Home.vue'
-import OnePlayer from './../views/OnePlayer.vue'
-import MultiplayerHome from './../views/Multiplayer/Home.vue'
 
-const routes = [
-  { path: '/', component: Home },
-  { path: '/one-player', name : 'one-player', component: OnePlayer },
-  { path: '/multi-player', name : 'multi-player-home', component: MultiplayerHome }
+const routes = [{
+    path: '/',
+    component: Home
+  }, {
+    path: '/one-player',
+    name : 'one-player',
+    component: () => import(/* webpackChunkName: "views/one-player" */ './../views/OnePlayer.vue')
+  }, {
+    path: '/multi-player',
+    name : 'multi-player-home',
+    component: () => import(/* webpackChunkName: "views/multi-player" */ './../views/Multiplayer/Home.vue')
+  }
 ];
 
 const router = createRouter({

@@ -1,6 +1,8 @@
 const config = {
-    'se_click' : 'se_click.wav',
-    'se_error' : 'se_error.wav'
+    'click'   : 'click.wav',
+    'error'   : 'error.wav',
+    'start'   : 'start.wav',
+    'success' : 'success.wav',
 };
 
 export class AudioManager {
@@ -29,6 +31,10 @@ export class AudioManager {
             return;
         }
 
-        document.getElementById(`audio-${key}`).play();
+        const audio = document.getElementById(`audio-${key}`);
+
+        audio.pause();
+        audio.currentTime = 0;
+        audio.play();
     }
 }

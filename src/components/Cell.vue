@@ -118,12 +118,12 @@ export default {
 
             if (this.hasError) {
                 
-                AudioManager.play('se_error');
+                AudioManager.play('error');
 
                 this.$emit('decrease-life');
             }
             else if (this.isSelected || this.isCrossed) {
-                AudioManager.play('se_click');
+                AudioManager.play('click');
             }
 
             if (type === 'click' || type === 'contextmenu') {

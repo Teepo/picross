@@ -29,8 +29,8 @@ ws.on('connection', ws => {
     ws.send('Hi there, I am a WebSocket server');
 });
 
-server.listen(3002, () => {
-    console.log(`Server started on port 3002 :)`);
+server.listen(3000, () => {
+    console.log(`Server started on port 3000 :)`);
 });
 
 server.on('request', (req, res) => {
