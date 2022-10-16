@@ -13,6 +13,11 @@
                     <span v-for="item in items">{{ item }}</span>
                 </div>
             </div>
+            <div class="grid tasks tasks-h">
+                <div v-for="items in this.getTasksH()" class="task">
+                    <span v-for="item in items">{{ item }}</span>
+                </div>
+            </div>
             <div class="grid cells">
                 <template v-for="(item, x) in [...Array(this.gridSize.x)]">
                     <Cell

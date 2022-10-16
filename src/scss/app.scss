@@ -18,6 +18,28 @@ audio {
     display: none;
 }
 
+.grid-wrapper {
+    display: grid;
+    width: 100%;
+    height: 250px;
+    grid-template-areas:
+    "v v v v v v v v v v v v"
+    "h cell cell cell cell cell cell cell cell cell cell cell"
+    "h cell cell cell cell cell cell cell cell cell cell cell"
+    "h cell cell cell cell cell cell cell cell cell cell cell"
+    "h cell cell cell cell cell cell cell cell cell cell cell"
+    "h cell cell cell cell cell cell cell cell cell cell cell"
+    "h cell cell cell cell cell cell cell cell cell cell cell"
+    "h cell cell cell cell cell cell cell cell cell cell cell"
+    "h cell cell cell cell cell cell cell cell cell cell cell"
+    "h cell cell cell cell cell cell cell cell cell cell cell"
+    "h cell cell cell cell cell cell cell cell cell cell cell"
+    "h cell cell cell cell cell cell cell cell cell cell cell"
+    "h cell cell cell cell cell cell cell cell cell cell cell";
+    grid-template-rows: 60px 1fr 455px;
+    grid-template-columns: 60px 1fr;
+}
+
 .tasks {
     display: flex;
     color: #282544;
@@ -30,19 +52,45 @@ audio {
 
     background-color: #ebeff8;
     border-radius: 5px;
+
+    display: flex;
+    justify-content: flex-end;
 }
 
 .tasks-v {
+    
+    grid-area: v;
+    justify-content: flex-end;
+    
     .task {
-        display: flex;
-        justify-content: flex-end;
+        
         flex-direction: column;
         width: 30px;
         margin: 0 .1px;
     }
 }
 
+.tasks-h {
+    
+    grid-area: h;
+    flex-direction: column;
+    
+    .task {
+        
+        height: 30px;
+        margin: .1px 0;
+        padding-right: 5px;
+
+        span {
+            display: inline-block;
+            margin-right: 5px;
+        }
+    }
+}
+
 .cells {
+
+    grid-area: cell;
 
     display: grid;
     grid-template-columns: repeat(15, $cellSize);
