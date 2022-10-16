@@ -15,37 +15,6 @@
     </div>
 </template>
 
-<script>
-
-export default {
-
-    components : { },
-
-    data() {
-        
-        return {
-        };
-    },
-
-    mounted() {
-
-        const client = new WebSocket('ws://localhost:3002');
-
-        client.onopen = event => {
-            console.log("[open] Connection established", event);
-            client.send("My name is John");
-        };
-    },
-
-    methods: {
-    }
-}
-</script>
-
-<style>
-body {background-color:tomato;}
-</style>
-
 <style lang="scss" scoped>
     .container {
         display: flex;
