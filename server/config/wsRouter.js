@@ -4,9 +4,12 @@ const routes = {
     'get-players' : import('./../controllers/getPlayers.js')
 };
 
-export async function wsRouter(data) {
+export async function wsRouter(client) {
 
-    const { event, body } = data;
+    for (const [event, func] of Object.entries(routes)) {
 
-    (await routes[event]).default(body);
+        client.on(event, async data => {
+            (await func).default(data);
+        });
+    }
 };

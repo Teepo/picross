@@ -1,26 +1,30 @@
-import { WebSocketServer } from 'ws';
+
+import { Server as io } from 'socket.io';
 
 import { wsRouter } from './config/wsRouter.js';
 
-let ws;
+let ws, wss;
 export function initWS(server) {
 
-    ws = new WebSocketServer({ server });
+    wss = new io(server, {
+        cors: {
+            origin: ["http://172.29.240.163:8080"],
+            credentials: true
+        }
+    });
 
-    ws.on('connection', wsHandler => {
+    wss.on('connection', client => {
 
-        ws = wsHandler
+        ws = client;
         
-        wsHandler.isAlive = true;
+        client.isAlive = true;
 
-        wsHandler.on('pong', () => {
-            ws.isAlive = true;
+        client.on('pong', () => {
+            client.isAlive = true;
         });
 
-        wsHandler.on('message', data => {
-            wsRouter(JSON.parse(data));
-        });
+        wsRouter(client);
     });
 };
 
-export { ws };
+export { ws, wss };

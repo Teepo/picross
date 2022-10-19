@@ -11,6 +11,8 @@
 
 <script>
 
+const { io } = require("socket.io-client");
+
 import Alert from './components/Alert';
 
 export default {
@@ -27,7 +29,7 @@ export default {
 
       ping() {
 
-        const socket = new WebSocket('ws://172.29.240.163:3000');
+        const socket = io('ws://172.29.240.163:3000');
 
         socket.onopen = () => {
             socket.send(JSON.stringify({ event : 'ping' }));

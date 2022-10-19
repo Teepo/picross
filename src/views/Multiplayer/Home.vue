@@ -19,6 +19,8 @@
 
 <script>
 
+const { io } = require('socket.io-client');
+
 import Alert from './../../components/Alert';
 
 export default {
@@ -27,19 +29,13 @@ export default {
         
         go() {
             
-            const socket = new WebSocket('ws://172.29.240.163:3000');
+            const socket = new io('ws://172.29.240.163:3000');
 
-            socket.onopen = () => {
+            socket.emit('add-player', {
+                login : this.login
+            });
 
-                socket.send(JSON.stringify({
-                    event : 'add-player',
-                    body : {
-                        login : this.login
-                    }
-                }));
-            };
-
-            socket.onmessage = event => {
+            socket.on('add-player-response', event => {
 
                 const hasError = Alert.handleWSError(event);
 
@@ -48,7 +44,7 @@ export default {
                 }
 
                 this.$router.push({ name: 'lobby' });
-            };
+            });
         }
     }
 }

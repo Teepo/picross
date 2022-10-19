@@ -9,6 +9,8 @@
 
 <script>
 
+const { io } = require('socket.io-client');
+
 export default {
 
     data() {
@@ -19,20 +21,12 @@ export default {
 
     mounted() {
 
-        const socket = new WebSocket('ws://172.29.240.163:3000');
+        const socket = new io('ws://172.29.240.163:3000');
 
-        socket.onopen = () => {
-            socket.send(JSON.stringify({ event : 'get-players' }));
-        };
-
-        socket.onmessage = event => {
-
-            console.log(event);
-
-            const { players } = JSON.parse(event.data);
-
+        socket.emit('get-players');
+        socket.on('get-players-response', players => {
             this.players = players;
-        };
+        });
     },
 
     methods: {

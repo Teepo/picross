@@ -30,9 +30,9 @@ export default {
         }
     },
 
-    handleWSError(event) {
+    handleWSError(data) {
 
-        const { error } = JSON.parse(event.data);
+        const { error } = data;
 
         if (!!error) {
             document.querySelector('main').dispatchEvent(new CustomEvent('error', { detail: error }));

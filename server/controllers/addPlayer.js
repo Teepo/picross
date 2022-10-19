@@ -16,15 +16,15 @@ export default function(data) {
             client : ws
         }));
 
-        ws.send(JSON.stringify({ result : true }));
+        ws.emit('add-player-response', { result : true });
     }
     catch(e) {
         
         if (e instanceof UserAlreadyExistError) {
 
-            ws.send(JSON.stringify({
+            ws.emit('add-player-response', {
                 error : new UserAlreadyExistError
-            }));
+            });
         }
     }
 }

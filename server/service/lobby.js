@@ -10,7 +10,7 @@ class Lobby {
 
     addPlayer(player) {
 
-        if (this.#players.includes(player.login)) {
+        if (this.#players.find(p => p.login === player.login)) {
             throw new UserAlreadyExistError;
         }
 
