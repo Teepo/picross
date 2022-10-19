@@ -1,29 +1,51 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link>
+    <button class="btn btn-primary" @click="ping">PING</button>
   </nav>
-  <router-view/>
+  <Alert v-if="!!error" :state="this.error.state" :message="this.error.message" />
+  <main @error="errorHandler" @closeAlert="closeAlert">
+    <router-view/>
+  </main>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
 
-nav {
-  padding: 30px;
+import Alert from './components/Alert';
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+export default {
 
-    &.router-link-exact-active {
-      color: #42b983;
+    components : { Alert },
+
+    data() {
+      return {
+        error : false
+      }
+    },
+
+    methods: {
+
+      ping() {
+
+        const socket = new WebSocket('ws://172.29.240.163:3000');
+
+        socket.onopen = () => {
+            socket.send(JSON.stringify({ event : 'ping' }));
+        };
+
+        socket.onmessage = event => {
+            console.log('pong', event);
+        };
+      },
+
+      errorHandler(error) {
+        this.error = error.detail;
+      },
+
+      closeAlert() {
+        this.error = false;
+      }
     }
-  }
 }
-</style>
+
+</script>

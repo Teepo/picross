@@ -1,5 +1,4 @@
 @import 'reset';
-@import "~bootstrap";
 
 $cellSize: 30px;
 
@@ -16,6 +15,47 @@ body {
 
 audio {
     display: none;
+}
+
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+}
+
+nav {
+  
+    padding: 30px;
+
+    a {
+        font-weight: 700;
+        color: #2c3e50;
+
+        &.router-link-exact-active {
+            color: #42b983;
+        }
+    }
+}
+
+main {
+    display: flex;
+    flex: 1;
+    text-align: left;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .grid-wrapper {

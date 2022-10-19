@@ -1,9 +1,56 @@
 <template>
     
     <div class="container">
-        <div class="form-group">
-            <label for="login" class="form-label">Pseudo</label>
-            <input type="text" class="form-control form-control-lg" id="login" placeholder="John Doe">
-        </div>
+        
+        <form class="row g-3">
+            
+            <label for="login" class="form-label">Nickname</label>
+
+            <div class="col auto">
+                <input type="text" class="form-control" id="login" v-model="login" placeholder="John Doe" required>
+            </div>
+            
+            <div class="col auto">
+                <button class="btn btn-primary mb-2" @click="go">GO</button>
+            </div>
+        </form>
     </div>
 </template>
+
+<script>
+
+import Alert from './../../components/Alert';
+
+export default {
+
+    methods: {
+        
+        go() {
+            
+            const socket = new WebSocket('ws://172.29.240.163:3000');
+
+            socket.onopen = () => {
+
+                socket.send(JSON.stringify({
+                    event : 'add-player',
+                    body : {
+                        login : this.login
+                    }
+                }));
+            };
+
+            socket.onmessage = event => {
+
+                const hasError = Alert.handleWSError(event);
+
+                if (hasError) {
+                    return;
+                }
+
+                this.$router.push({ name: 'lobby' });
+            };
+        }
+    }
+}
+
+</script>
