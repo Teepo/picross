@@ -13,11 +13,14 @@ const routes = [{
     path: '/multi-player',
     name : 'multi-player-home',
     component: () => import(/* webpackChunkName: "views/multi-player" */ './../views/Multiplayer/Home.vue')
-  },
-  {
+  }, {
     path: '/lobby',
     name : 'lobby',
     component: () => import(/* webpackChunkName: "views/lobby" */ './../views/Multiplayer/Lobby.vue')
+  }, {
+    path: '/admin',
+    name : 'admin',
+    component: () => import(/* webpackChunkName: "views/admin" */ './../views/Admin.vue')
   }
 ];
 

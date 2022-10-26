@@ -6,13 +6,17 @@
             
             <label for="login" class="form-label">Nickname</label>
 
-            <div class="col auto">
+            <div class="col auto mb-2">
                 <input type="text" class="form-control" id="login" v-model="login" placeholder="John Doe" required>
             </div>
-            
-            <div class="col auto">
-                <button class="btn btn-primary mb-2" @click="go">GO</button>
+
+            <label for="login" class="form-label">Color</label>
+
+            <div class="col auto mb-2">
+                <input type="color" class="form-control" id="color" v-model="color" required>
             </div>
+
+            <button class="btn btn-primary" @click="go">GO</button>
         </form>
     </div>
 </template>
@@ -28,20 +32,28 @@ export default {
     methods: {
         
         go() {
+
+            if (!this.login || this.login === '') {
+                return;
+            }
             
-            const socket = new io('ws://172.29.240.163:3000');
+            const socket = new io('ws://172.27.41.39:3000');
 
             socket.emit('add-player', {
-                login : this.login
+                login : this.login,
+                color : this.color
             });
 
-            socket.on('add-player-response', event => {
+            // data is player or error
+            socket.on('add-player-response', data => {
 
-                const hasError = Alert.handleWSError(event);
+                const hasError = Alert.handleWSError(data);
 
                 if (hasError) {
                     return;
                 }
+
+                sessionStorage.setItem('player', data);
 
                 this.$router.push({ name: 'lobby' });
             });
