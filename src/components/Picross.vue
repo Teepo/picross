@@ -163,3 +163,10 @@ export default {
 }
 
 </script>
+
+<style scoped>
+.container {
+    display: block;
+    width: auto;
+}
+</style>
