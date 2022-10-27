@@ -22,6 +22,11 @@ export default {
       }
     },
 
+    mounted() {
+      // OMG FIX THIS PLZ
+      window.WS_HOST = '172.27.34.71';
+    },
+
     methods: {
 
       errorHandler(error) {

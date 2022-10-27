@@ -10,13 +10,15 @@ export default function(data) {
     const { login } = data;
     
     try {
-        
-        lobby.addPlayer(new Player({
-            login : login,
-            client : ws
-        }));
 
-        ws.emit('add-player-response', { result : true });
+        const player = new Player({
+            login    : login,
+            wsClient : ws
+        })
+        
+        lobby.addPlayer(player);
+
+        ws.emit('add-player-response', { player : player.get() });
     }
     catch(e) {
         

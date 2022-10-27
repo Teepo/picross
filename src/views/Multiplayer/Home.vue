@@ -10,12 +10,6 @@
                 <input type="text" class="form-control" id="login" v-model="login" placeholder="John Doe" required>
             </div>
 
-            <label for="login" class="form-label">Color</label>
-
-            <div class="col auto mb-2">
-                <input type="color" class="form-control" id="color" v-model="color" required>
-            </div>
-
             <button class="btn btn-primary" @click="go">GO</button>
         </form>
     </div>
@@ -37,11 +31,10 @@ export default {
                 return;
             }
             
-            const socket = new io('ws://172.27.41.39:3000');
+            const socket = new io(`ws://${WS_HOST}:3000`);
 
             socket.emit('add-player', {
-                login : this.login,
-                color : this.color
+                login : this.login
             });
 
             // data is player or error
@@ -53,7 +46,7 @@ export default {
                     return;
                 }
 
-                sessionStorage.setItem('player', data);
+                sessionStorage.setItem('player', JSON.stringify(data.player));
 
                 this.$router.push({ name: 'lobby' });
             });

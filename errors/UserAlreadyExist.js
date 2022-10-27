@@ -6,6 +6,6 @@ export class UserAlreadyExistError extends Error {
         
         this.name    = "UserAlreadyExistError";
         this.message = 'This nickname is already used';
-        this.state   = 'danger';
+        this.state   = 'warning';
     }
 }

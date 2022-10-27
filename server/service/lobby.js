@@ -1,4 +1,5 @@
 import { UserAlreadyExistError } from './../../errors/index.js';
+import { UserNotExistError     } from './../../errors/index.js';
 
 class Lobby {
 
@@ -18,7 +19,20 @@ class Lobby {
     }
 
     getPlayers() {
-        return this.#players;
+
+        return this.#players.map(p => {
+            return p.get();
+        });
+    }
+
+    getPlayerByWsClientId(wsClientId) {
+
+        let player;
+        if (!(player = this.#players.find(p => p.wsClient.id === wsClientId))) {
+            throw new UserNotExistError;
+        }
+
+        return player;
     }
 }
 
