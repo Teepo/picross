@@ -1,5 +1,5 @@
 <template>
-    <Picross />
+    <Picross is-multiplayer />
 </template>
 
 <script>

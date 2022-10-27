@@ -5,7 +5,7 @@
         :class="{
             'is-disabled' : this.isDisabled
         }"
-    />
+    ></Svg>
 </template>
 
 <script>

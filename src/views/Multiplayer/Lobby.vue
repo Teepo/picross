@@ -5,7 +5,7 @@
             <li class="col" v-for="player in players">
                 <div class="card">
                     <div class="card-body">
-                        <strong class="card-title fw-bold">{{ player.login }}</strong>
+                        <strong class="card-title fw-bold d-block">{{ player.login }}</strong>
                         <button
                             v-if="this.player.wsClientId == player.wsClientId"
                             @click="setPlayerReady"

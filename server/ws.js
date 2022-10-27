@@ -8,7 +8,7 @@ export function initWS(server) {
 
     wss = new io(server, {
         cors: {
-            origin: ["http://172.27.34.71:8080"],
+            origin: ["http://172.27.37.73:8080"],
             credentials: true
         }
     });

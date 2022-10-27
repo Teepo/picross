@@ -12,9 +12,9 @@ export default function(data) {
         
         const p = lobby.getPlayerByWsClientId(player.wsClientId);
 
-        p.isReady = !p.isReady;
+        p.board = player.board;
 
-        wss.emit('set-player-is-ready', {
+        wss.emit('update-board', {
             player : p.get()
         });
     }
@@ -22,7 +22,7 @@ export default function(data) {
         
         if (e instanceof UserNotExistError) {
 
-            console.error("setPlayerIsReady > player with ws client id doesn't exist", player.wsClientId);
+            console.error("updateBoard > player with ws client id doesn't exist", player.wsClientId);
         }
     }
 }

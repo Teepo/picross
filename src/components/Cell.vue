@@ -16,15 +16,15 @@
     @contextmenu="clickHandler"
     @mouseenter="clickHandler"
     ref="cells">
-        <Svg name="cross" v-if="this.isCrossed" />
+        <Svg name="cross" v-if="this.isCrossed"></Svg>
     </div>
 </template>
 
 <script>
 
-import Svg from './Svg';
+import Svg from './Svg.vue';
 
-import { AudioManager } from './../modules/AudioManager';
+import { AudioManager } from './../modules/AudioManager.js';
 
 export default {
 
@@ -65,9 +65,17 @@ export default {
         this.$root.cells[this.x][this.y] = this;
     },
 
+    updated() {
+        this.$parent.updateBoard();
+    },
+
     methods : {
 
         clickHandler(event) {
+            
+            if (this.$parent.isDisabled) {
+                return;
+            }
 
             const type = event.type;
 
@@ -150,7 +158,7 @@ export default {
             }
 
             if (validCellCount === revealedCellCount) {
-                console.log('CLEAR');
+                this.$parent.end();
             }
         }
     }

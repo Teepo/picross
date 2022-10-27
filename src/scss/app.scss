@@ -127,6 +127,16 @@ nav {
     }
 }
 
+.picross {
+
+    &--is-disabled {
+
+        .cell {
+            cursor: default;
+        }
+    }
+}
+
 .cells {
 
     grid-area: cell;

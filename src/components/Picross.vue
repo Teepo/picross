@@ -1,6 +1,10 @@
 <template>
     
-    <div class="container">
+    <div :class="{
+        'container' : true,
+        'picross'   : true,
+        'picross--is-disabled' : this.isDisabled
+    }" @end="end">
         <div class="lifes">
             <template v-for="x in [...Array(this.lifeCount)]" :key="x">
                 <Life ref="hearts" />
@@ -10,12 +14,22 @@
         <div class="grid-wrapper">
             <div class="grid tasks tasks-v">
                 <div v-for="items in this.getTasksV()" class="task">
-                    <span v-for="item in items">{{ item }}</span>
+                    <template v-if="items.length > 0">
+                        <span v-for="item in items">{{ item }}</span>
+                    </template>
+                    <template v-else>
+                        <span>0</span>
+                    </template>
                 </div>
             </div>
             <div class="grid tasks tasks-h">
                 <div v-for="items in this.getTasksH()" class="task">
-                    <span v-for="item in items">{{ item }}</span>
+                    <template v-if="items.length > 0">
+                        <span v-for="item in items">{{ item }}</span>
+                    </template>
+                    <template v-else>
+                        <span>0</span>
+                    </template>
                 </div>
             </div>
             <div class="grid cells">
@@ -33,50 +47,93 @@
 
 <script>
 
-import Cell from './../components/Cell';
-import Life from './../components/Life';
+const { io } = require('socket.io-client');
+
+import Cell from './../components/Cell.vue';
+import Life from './../components/Life.vue';
 
 export default {
 
     components : { Cell, Life },
 
+    props : {
+        _player: {
+            type: Object,
+            default: false
+        },
+        _isDisabled: {
+            type: Boolean,
+            default: false
+        },
+        isMultiplayer: {
+            type: Boolean,
+            default: false
+        }
+    },
+
     data() {
         
         return {
+
+            socket  : null,
+            player  : this._player,
+
+            isDisabled : this._isDisabled,
             
             gridSize : {
                 x : 15,
                 y : 15
             },
             board : [
-                [1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-                [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-                [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-                [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-                [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             ],
             lifeCount : 3,
-            lifeLeft  : 3
+            lifeLeft  : 3,
         };
     },
 
     mounted() {
-        
+
         this.$root.board     = this.board;
         this.$root.gridSize  = this.gridSize;
         
         this.$root.lifeCount = this.lifeCount;
         this.$root.lifeLeft  = this.lifeLeft;
+
+        if (!!this._board) {
+            this.$root.board = this._board;
+        }
+
+        if (!this.isDisabled) {
+            this.player = JSON.parse(sessionStorage.getItem('player'));
+        }
+
+        if (this.isMultiplayer) {
+
+            this.player.board = this.$root.board;
+            
+            this.socket = new io(`ws://${WS_HOST}:3000`);
+
+            this.socket.on('update-board', data => {
+                this.$root.board = data.player.board;
+            });
+
+            this.updateBoard();
+        }
     },
 
     methods: {
@@ -155,9 +212,20 @@ export default {
             heart && (heart.isDisabled = true);
 
             if (this.lifeLeft <= 0) {
-                console.log('GAME OVER');
+                this.end()
                 return;
             }
+        },
+
+        end() {
+            this.isDisabled = true;
+        },
+
+        updateBoard() {
+            
+            this.socket.emit('update-board', {
+                player : this.player,
+            });
         }
     }
 }
