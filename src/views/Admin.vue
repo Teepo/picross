@@ -18,19 +18,16 @@ export default {
 
         return {
             socket  : null,
-            player  : null,
             players : []
         }
     },
 
     mounted() {
 
-        this.player = JSON.parse(sessionStorage.getItem('player'));
-
         this.socket = new io(`ws://${WS_HOST}:3000`);
 
         this.socket.emit('get-players');
-        this.socket.on('get-players-response', players => {
+        this.socket.on('get-players', players => {
             this.players = players;
         });
     },

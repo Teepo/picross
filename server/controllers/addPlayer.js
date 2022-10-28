@@ -3,9 +3,7 @@ import { Player } from './../service/player.js';
 
 import { UserAlreadyExistError } from './../../errors/index.js';
 
-import { ws } from './../ws.js';
-
-export default function(data) {
+export default function(socket, data) {
 
     const { login } = data;
     
@@ -13,18 +11,18 @@ export default function(data) {
 
         const player = new Player({
             login    : login,
-            wsClient : ws
+            socket : socket
         })
         
         lobby.addPlayer(player);
-
-        ws.emit('add-player-response', { player : player.get() });
+        
+        socket.emit('add-player', { player : player.get() });
     }
     catch(e) {
         
         if (e instanceof UserAlreadyExistError) {
 
-            ws.emit('add-player-response', {
+            socket.emit('add-player-response', {
                 error : new UserAlreadyExistError
             });
         }

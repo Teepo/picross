@@ -1,7 +1,12 @@
 import { lobby } from './../service/lobby.js';
 
-import { wss } from './../ws.js';
+export default function(socket) {
 
-export default function() {
-    wss.emit('get-players-response', lobby.getPlayers());
+    try {
+        socket.emit('get-players', lobby.getPlayers());
+        socket.broadcast.emit('get-players', lobby.getPlayers());
+    }
+    catch(e) {
+        console.error(e);
+    }
 }

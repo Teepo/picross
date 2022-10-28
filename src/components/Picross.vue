@@ -33,10 +33,12 @@
                 </div>
             </div>
             <div class="grid cells">
-                <template v-for="(item, x) in [...Array(this.gridSize.x)]">
+                <template v-for="(item, x) in this.playerBoard">
                     <Cell
-                        v-for="(item, y) in [...Array(this.gridSize.y)]"
+                        v-for="(item, y) in this.playerBoard[x]"
                         :key="y" :_x="x" :_y="y"
+                        :_isSelected="item === 1"
+                        :_isCrossed="item === -1"
                         @decrease-life="decreaseLifeHandler"
                     />
                 </template>
@@ -101,6 +103,23 @@ export default {
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             ],
+            playerBoard : [
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            ],
             lifeCount : 3,
             lifeLeft  : 3,
         };
@@ -108,30 +127,39 @@ export default {
 
     mounted() {
 
-        this.$root.board     = this.board;
-        this.$root.gridSize  = this.gridSize;
+        this.socket = new io(`ws://${WS_HOST}:3000`);
+
+        this.$root.board = this.board;
+        this.$root.gridSize = this.gridSize;
         
         this.$root.lifeCount = this.lifeCount;
         this.$root.lifeLeft  = this.lifeLeft;
 
-        if (!!this._board) {
-            this.$root.board = this._board;
+        // pour reprendre une instance en cours
+        if (this._player) {
+            this.playerBoard = this._player.board;
         }
 
+        // Si pas en mode spec
         if (!this.isDisabled) {
             this.player = JSON.parse(sessionStorage.getItem('player'));
+        }
+        else {
+
+            console.log('LISTEN UPDATE BOARD');
+
+            // En mode spec, on update tout le board
+            this.socket.on('update-board', data => {
+
+                console.log('RECEIVE BOARD', data.player.board);
+
+                this.playerBoard = data.player.board;
+            });
         }
 
         if (this.isMultiplayer) {
 
-            this.player.board = this.$root.board;
-            
-            this.socket = new io(`ws://${WS_HOST}:3000`);
-
-            this.socket.on('update-board', data => {
-                this.$root.board = data.player.board;
-            });
-
+            // on récupère l'état du board
             this.updateBoard();
         }
     },
@@ -222,9 +250,16 @@ export default {
         },
 
         updateBoard() {
+
+            if (this.isDisabled) {
+                return;
+            }
+
+            console.log('EMIT BOARD', this.playerBoard);
             
             this.socket.emit('update-board', {
                 player : this.player,
+                board  : this.playerBoard
             });
         }
     }

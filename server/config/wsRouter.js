@@ -5,12 +5,12 @@ const routes = {
     'update-board'        : import('./../controllers/updateBoard.js'),
 };
 
-export async function wsRouter(client) {
+export async function wsRouter(socket) {
 
     for (const [event, func] of Object.entries(routes)) {
 
-        client.on(event, async data => {
-            (await func).default(data);
+        socket.on(event, async data => {
+            (await func).default(socket, data);
         });
     }
 };

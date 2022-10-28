@@ -1,20 +1,20 @@
 export class Player {
 
-    constructor({ login, wsClient }) {
+    constructor({ login, socket }) {
         
-        this.login      = login;
+        this.login = login;
         
-        this.wsClient   = wsClient;
-        this.wsClientId = wsClient.id;
+        this.socket   = socket;
+        this.socketId = socket.id;
         
-        this.isReady    = false;
+        this.isReady = false;
 
         this.board = [];
     }
 
     get() {
 
-        const { ['wsClient']: omitted, ...rest } = this;
+        const { ['socket']: omitted, ...rest } = this;
         
         return rest;
     }

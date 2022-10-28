@@ -38,7 +38,7 @@ export default {
             });
 
             // data is player or error
-            socket.on('add-player-response', data => {
+            socket.on('add-player', data => {
 
                 const hasError = Alert.handleWSError(data);
 

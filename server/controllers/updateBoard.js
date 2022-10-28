@@ -2,27 +2,32 @@ import { lobby } from './../service/lobby.js';
 
 import { UserNotExistError } from './../../errors/index.js';
 
-import { wss } from './../ws.js';
+export default function(socket, data) {
 
-export default function(data) {
-
-    const { player } = data;
+    const { player, board } = data;
     
     try {
         
-        const p = lobby.getPlayerByWsClientId(player.wsClientId);
+        const p = lobby.getPlayerBySocketId(player.socketId);
 
-        p.board = player.board;
+        p.board = board;
 
-        wss.emit('update-board', {
+        console.log('-------------------------------------');
+        console.log('UPDATE BOARD', JSON.stringify(board));
+        console.log('PLAYER', p.get());
+        console.log('-------------------------------------');
+
+        socket.broadcast.emit('update-board', {
             player : p.get()
         });
     }
     catch(e) {
+
+        console.log(e);
         
         if (e instanceof UserNotExistError) {
 
-            console.error("updateBoard > player with ws client id doesn't exist", player.wsClientId);
+            console.error("updateBoard > player with socket id doesn't exist", player.socketId);
         }
     }
 }

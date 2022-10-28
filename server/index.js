@@ -4,7 +4,9 @@ import http from 'http';
 
 import bodyParser from 'body-parser';
 
-import { initWS } from './ws.js';
+import { Server as ws } from 'socket.io';
+
+import { wsRouter } from './config/wsRouter.js';
 
 const app = express();
 
@@ -17,4 +19,13 @@ server.listen(3000, () => {
     console.log(`Server started on port 3000 :)`);
 });
 
-initWS(server);
+const io = new ws(server, {
+    cors: {
+        origin: ["http://172.27.37.251:8080"],
+        credentials: true
+    }
+});
+
+io.on('connection', socket => {
+    wsRouter(socket);
+});

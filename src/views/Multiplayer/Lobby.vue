@@ -7,7 +7,7 @@
                     <div class="card-body">
                         <strong class="card-title fw-bold d-block">{{ player.login }}</strong>
                         <button
-                            v-if="this.player.wsClientId == player.wsClientId"
+                            v-if="this.player && this.player.socketId == player.socketId"
                             @click="setPlayerReady"
                             :class="{ btn: true, 'mt-2' : true, 'btn-success': !player.isReady, 'btn-danger': player.isReady }"
                         >
@@ -43,12 +43,18 @@ export default {
 
         this.socket = new io(`ws://${WS_HOST}:3000`);
 
+        console.log('emit');
         this.socket.emit('get-players');
-        this.socket.on('get-players-response', players => {
+        
+        this.socket.on('get-players', players => {
+            console.log('get-players', players);
             this.players = players;
         });
 
-        this.socket.on('set-player-is-ready', () => {
+        this.socket.on('set-player-is-ready', data => {
+            
+            this.player = data.player;
+            
             this.socket.emit('get-players');
         });
     },

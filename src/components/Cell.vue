@@ -33,14 +33,16 @@ export default {
     props: {
         _x : { type : Number,  required : true },
         _y : { type : Number,  required : true },
+        _isSelected : { type : Boolean,  required : true, default : false },
+        _isCrossed  : { type : Boolean,  required : true, default : false },
     },
 
     data : function() {
 
         return {
 
-            isSelected : false,
-            isCrossed  : false,
+            isSelected : this._isSelected,
+            isCrossed  : this._isCrossed,
             hasError   : false,
 
             x : this._x,
@@ -66,6 +68,18 @@ export default {
     },
 
     updated() {
+
+        console.log('CELL UPDATED', this.x, this.y, this.isSelected, this.isSelected);
+
+        if (this.$parent.isDisabled) {
+            return;
+        }
+
+        const value = this.isSelected ? 1 : (this.isCrossed ? -1 : 0);
+
+
+        this.$parent.playerBoard[this.x][this.y] = value;
+
         this.$parent.updateBoard();
     },
 

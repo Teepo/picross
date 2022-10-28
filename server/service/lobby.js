@@ -25,10 +25,10 @@ class Lobby {
         });
     }
 
-    getPlayerByWsClientId(wsClientId) {
+    getPlayerBySocketId(socketId) {
 
         let player;
-        if (!(player = this.#players.find(p => p.wsClient.id === wsClientId))) {
+        if (!(player = this.#players.find(p => p.socket.id === socketId))) {
             throw new UserNotExistError;
         }
 
