@@ -69,8 +69,6 @@ export default {
 
     updated() {
 
-        console.log('CELL UPDATED', this.x, this.y, this.isSelected, this.isSelected);
-
         if (this.$parent.isDisabled) {
             return;
         }

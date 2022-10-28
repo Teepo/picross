@@ -146,13 +146,8 @@ export default {
         }
         else {
 
-            console.log('LISTEN UPDATE BOARD');
-
             // En mode spec, on update tout le board
             this.socket.on('update-board', data => {
-
-                console.log('RECEIVE BOARD', data.player.board);
-
                 this.playerBoard = data.player.board;
             });
         }
@@ -254,8 +249,6 @@ export default {
             if (this.isDisabled) {
                 return;
             }
-
-            console.log('EMIT BOARD', this.playerBoard);
             
             this.socket.emit('update-board', {
                 player : this.player,

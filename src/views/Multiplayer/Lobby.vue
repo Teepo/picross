@@ -43,17 +43,15 @@ export default {
 
         this.socket = new io(`ws://${WS_HOST}:3000`);
 
-        console.log('emit');
         this.socket.emit('get-players');
         
         this.socket.on('get-players', players => {
-            console.log('get-players', players);
             this.players = players;
         });
 
         this.socket.on('set-player-is-ready', data => {
-            
-            this.player = data.player;
+
+            this.players.find(player => player.socketId == data.player.socketId).isReady = data.player.isReady;
             
             this.socket.emit('get-players');
         });

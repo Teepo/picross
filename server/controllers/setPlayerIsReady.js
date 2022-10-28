@@ -13,8 +13,6 @@ export default function(socket, data) {
 
         p.isReady = !p.isReady;
 
-        console.log('player is ready', p.get());
-
         socket.emit('set-player-is-ready', {
             player : p.get()
         });

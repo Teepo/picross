@@ -12,21 +12,13 @@ export default function(socket, data) {
 
         p.board = board;
 
-        console.log('-------------------------------------');
-        console.log('UPDATE BOARD', JSON.stringify(board));
-        console.log('PLAYER', p.get());
-        console.log('-------------------------------------');
-
         socket.broadcast.emit('update-board', {
             player : p.get()
         });
     }
     catch(e) {
-
-        console.log(e);
         
         if (e instanceof UserNotExistError) {
-
             console.error("updateBoard > player with socket id doesn't exist", player.socketId);
         }
     }
