@@ -31,10 +31,10 @@ export default {
     components : { Svg },
 
     props: {
-        _x : { type : Number,  required : true },
-        _y : { type : Number,  required : true },
-        _isSelected : { type : Boolean,  required : true, default : false },
-        _isCrossed  : { type : Boolean,  required : true, default : false },
+        _x : { type : Number, required : true },
+        _y : { type : Number, required : true },
+        _isSelected : { type : Boolean, required : true },
+        _isCrossed  : { type : Boolean, required : true },
     },
 
     data : function() {
@@ -75,10 +75,12 @@ export default {
 
         const value = this.isSelected ? 1 : (this.isCrossed ? -1 : 0);
 
-
         this.$parent.playerBoard[this.x][this.y] = value;
 
         this.$parent.updateBoard();
+        this.$parent.updateSession({
+            board : this.$parent.playerBoard
+        });
     },
 
     methods : {

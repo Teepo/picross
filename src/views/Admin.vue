@@ -1,7 +1,7 @@
 <template>
-    <div v-for="player in players">
+    <template v-for="player in players">
         <Picross _is-disabled is-multiplayer :_player="player" />
-    </div>
+    </template>
 </template>
 
 <script>
@@ -18,7 +18,7 @@ export default {
 
         return {
             socket  : null,
-            players : []
+            players : false
         }
     },
 

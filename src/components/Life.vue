@@ -16,28 +16,17 @@ export default {
     
     components : { Svg },
 
-    data() {
-        
-        return {
-            isDisabled : false
+    props : {
+        _isDisabled: {
+            type: Boolean,
+            default: false
         }
     },
 
-    watch: {
+    data() {
         
-        isDisabled(disabled) {
-
-            if (!disabled) {
-                return;
-            }
-
-            return;
-            
-            const icon = this.$refs.heart.$el;
-
-            icon.addEventListener('animationEnd', () => {
-                icon.classList.add('is-disabled')
-            });
+        return {
+            isDisabled : this._isDisabled
         }
     }
 }

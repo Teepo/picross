@@ -6,8 +6,8 @@
         'picross--is-disabled' : this.isDisabled
     }" @end="end">
         <div class="lifes">
-            <template v-for="x in [...Array(this.lifeCount)]" :key="x">
-                <Life ref="hearts" />
+            <template v-for="(x, index) in [...Array(this.lifeCount)]" :key="x">
+                <Life ref="hearts" :_is-disabled="index >= this.player.life" />
             </template>
         </div>
 
@@ -33,9 +33,9 @@
                 </div>
             </div>
             <div class="grid cells">
-                <template v-for="(item, x) in this.playerBoard">
+                <template v-for="(item, x) in this.player.board">
                     <Cell
-                        v-for="(item, y) in this.playerBoard[x]"
+                        v-for="(item, y) in this.player.board[x]"
                         :key="y" :_x="x" :_y="y"
                         :_isSelected="item === 1"
                         :_isCrossed="item === -1"
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+
+const extend = require('extend');
 
 const { io } = require('socket.io-client');
 
@@ -74,11 +76,45 @@ export default {
     },
 
     data() {
-        
+
+        let player = this._player;
+        let playerBoard = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+
+        // pour reprendre une instance en cours
+        if (player) {
+            playerBoard = player.board;
+        }
+
+        // Si pas en mode spec
+        if (!this._isDisabled) {
+            
+            player = JSON.parse(sessionStorage.getItem('player'));
+
+            if (!player.board) {
+                player.board = playerBoard;
+            }
+        }
+
         return {
 
-            socket  : null,
-            player  : this._player,
+            socket : null,
+            player : player,
 
             isDisabled : this._isDisabled,
             
@@ -103,25 +139,8 @@ export default {
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             ],
-            playerBoard : [
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            ],
             lifeCount : 3,
-            lifeLeft  : 3,
+            lifeLeft  : player.life,
         };
     },
 
@@ -135,20 +154,12 @@ export default {
         this.$root.lifeCount = this.lifeCount;
         this.$root.lifeLeft  = this.lifeLeft;
 
-        // pour reprendre une instance en cours
-        if (this._player) {
-            this.playerBoard = this._player.board;
-        }
-
-        // Si pas en mode spec
-        if (!this.isDisabled) {
-            this.player = JSON.parse(sessionStorage.getItem('player'));
-        }
-        else {
+        // Si en mode spec
+        if (this.isDisabled) {
 
             // En mode spec, on update tout le board
             this.socket.on('update-board', data => {
-                this.playerBoard = data.player.board;
+                this.player.board = data.player.board;
             });
         }
 
@@ -238,6 +249,10 @@ export default {
                 this.end()
                 return;
             }
+
+            this.updateSession({
+                life : --this.player.life
+            });
         },
 
         end() {
@@ -254,7 +269,16 @@ export default {
                 player : this.player,
                 board  : this.playerBoard
             });
-        }
+        },
+
+        updateSession(data) {
+
+            const player = JSON.parse(sessionStorage.getItem('player'));
+
+            const newPlayer = extend({}, player, data);
+
+            sessionStorage.setItem('player', JSON.stringify(newPlayer));
+        },
     }
 }
 

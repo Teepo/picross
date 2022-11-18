@@ -21,7 +21,7 @@ server.listen(3000, () => {
 
 const io = new ws(server, {
     cors: {
-        origin: ["http://172.27.37.251:8080"],
+        origin: ["http://172.24.38.248:8080"],
         credentials: true
     }
 });

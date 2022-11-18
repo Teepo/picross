@@ -6,6 +6,7 @@
                 <div class="card">
                     <div class="card-body">
                         <strong class="card-title fw-bold d-block">{{ player.login }}</strong>
+                        <strong class="card-title fw-bold d-block">{{ player.socketId }}</strong>
                         <button
                             v-if="this.player && this.player.socketId == player.socketId"
                             @click="setPlayerReady"

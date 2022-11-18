@@ -10,7 +10,7 @@ export default function(socket, data) {
     try {
 
         const player = new Player({
-            login    : login,
+            login  : login,
             socket : socket
         })
         

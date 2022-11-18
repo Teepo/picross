@@ -27,7 +27,7 @@ export default {
 
     mounted() {
       // OMG FIX THIS PLZ
-      window.WS_HOST = '172.27.37.251';
+      window.WS_HOST = '172.24.38.248';
     },
 
     methods: {

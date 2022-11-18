@@ -6,7 +6,6 @@ export default function(socket, data) {
 
     const { player } = data;
 
-    
     try {
         
         const p = lobby.getPlayerBySocketId(player.socketId);
