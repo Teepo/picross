@@ -14,8 +14,8 @@
     "core-js": "^3.26.1",
     "extend": "^3.0.2",
     "register-service-worker": "^1.7.2",
-    "socket.io": "^4.5.3",
-    "socket.io-client": "^4.5.3",
+    "socket.io": "^4.5.4",
+    "socket.io-client": "^4.5.4",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
     "vuex": "^4.1.0"
@@ -32,11 +32,11 @@
     "gh-pages": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "jsdoc": "^4.0.0",
-    "postcss-loader": "^7.0.1",
+    "postcss-loader": "^7.0.2",
     "regenerator-runtime": "^0.13.11",
-    "sass": "^1.56.1",
+    "sass": "^1.57.1",
     "sass-loader": "^13.2.0",
-    "svgo": "^3.0.1",
+    "svgo": "^3.0.2",
     "svgo-loader": "^3.0.3",
     "vue-cli-plugin-svg-sprite": "~1.1.0"
   }
