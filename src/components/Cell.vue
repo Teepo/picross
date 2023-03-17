@@ -75,7 +75,7 @@ export default {
 
         const value = this.isSelected ? 1 : (this.isCrossed ? -1 : 0);
 
-        this.$parent.playerBoard[this.x][this.y] = value;
+        this.$parent.player.board[this.x][this.y] = value;
 
         this.$parent.updateBoard();
         this.$parent.updateSession({

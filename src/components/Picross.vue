@@ -62,8 +62,7 @@ export default {
 
     props : {
         _player: {
-            type: Object,
-            default: false
+            type: Object
         },
         _isDisabled: {
             type: Boolean,
@@ -77,7 +76,6 @@ export default {
 
     data() {
 
-        let player = this._player;
         let playerBoard = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -96,13 +94,18 @@ export default {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ];
 
+        let player = this._player ?? {
+            board : playerBoard,
+            life  : 3
+        };
+
         // pour reprendre une instance en cours
         if (player) {
             playerBoard = player.board;
         }
 
         // Si pas en mode spec
-        if (!this._isDisabled) {
+        if (this.isMultiplayer && !this._isDisabled) {
             
             player = JSON.parse(sessionStorage.getItem('player'));
 
@@ -146,7 +149,9 @@ export default {
 
     mounted() {
 
-        this.socket = new io(`ws://${WS_HOST}:3000`);
+        if (this.isMultiplayer) {
+            this.socket = new io(`ws://${WS_HOST}:3000`);
+        }
 
         this.$root.board = this.board;
         this.$root.gridSize = this.gridSize;
@@ -262,6 +267,10 @@ export default {
         updateBoard() {
 
             if (this.isDisabled) {
+                return;
+            }
+
+            if (!this.isMultiplayer) {
                 return;
             }
             
