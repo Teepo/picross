@@ -1,4 +1,5 @@
 escape ^po
+bind o windowlist
 altscreen on
 term xterm-256color
 termcapingo xterm-color|xterm|xterms|xs|rxvt ti@:te@
