@@ -32,20 +32,29 @@ export default {
     data() {
 
         return {
-            socket  : null,
-            player  : null,
-            players : []
+            socket   : null,
+            socketId : null,
+            player   : null,
+            players  : []
         }
     },
 
     mounted() {
 
-        this.player = JSON.parse(sessionStorage.getItem('player'));
+        this.socketId = sessionStorage.getItem('socketId');
+
+        if (!this.socketId) {
+            this.$router.push({ name: 'multi-player-home' });
+        }
 
         this.socket = new io(`ws://${WS_HOST}:3000`);
 
+        this.socket.emit('get-player', { socketId : this.socketId });
+        this.socket.on('get-player', player => {
+            this.player = player;
+        });
+
         this.socket.emit('get-players');
-        
         this.socket.on('get-players', players => {
             this.players = players;
         });
@@ -53,8 +62,12 @@ export default {
         this.socket.on('set-player-is-ready', data => {
 
             this.players.find(player => player.socketId == data.player.socketId).isReady = data.player.isReady;
-            
+
             this.socket.emit('get-players');
+        });
+
+        this.socket.on('disconnect', () => {
+            sessionStorage.clear();
         });
     },
 
@@ -62,11 +75,7 @@ export default {
 
         setPlayerReady() {
 
-            this.socket = new io(`ws://${WS_HOST}:3000`);
-
-            this.socket.emit('set-player-is-ready', {
-                player : this.player
-            });
+            this.socket.emit('set-player-is-ready', { socketId : this.socketId });
         }
     }
 }

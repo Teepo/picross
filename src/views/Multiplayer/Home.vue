@@ -46,7 +46,7 @@ export default {
                     return;
                 }
 
-                sessionStorage.setItem('player', JSON.stringify(data.player));
+                sessionStorage.setItem('socketId', data.socketId);
 
                 this.$router.push({ name: 'lobby' });
             });

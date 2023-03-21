@@ -4,7 +4,7 @@
         'container' : true,
         'picross'   : true,
         'picross--is-disabled' : this.isDisabled
-    }" @end="end">
+    }" @end="end" v-if="this.player">
         <div class="lifes">
             <template v-for="(x, index) in [...Array(this.lifeCount)]" :key="x">
                 <Life ref="hearts" :_is-disabled="index >= this.player.life" />
@@ -76,48 +76,10 @@ export default {
 
     data() {
 
-        let playerBoard = [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ];
-
-        let player = this._player ?? {
-            board : playerBoard,
-            life  : 3
-        };
-
-        // pour reprendre une instance en cours
-        if (player) {
-            playerBoard = player.board;
-        }
-
-        // Si pas en mode spec
-        if (this.isMultiplayer && !this._isDisabled) {
-            
-            player = JSON.parse(sessionStorage.getItem('player'));
-
-            if (!player.board) {
-                player.board = playerBoard;
-            }
-        }
-
         return {
 
             socket : null,
-            player : player,
+            player : null,
 
             isDisabled : this._isDisabled,
             
@@ -143,14 +105,17 @@ export default {
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             ],
             lifeCount : 3,
-            lifeLeft  : player.life,
+            lifeLeft  : 3,
         };
     },
 
-    mounted() {
+    async mounted() {
 
         if (this.isMultiplayer) {
+            
             this.socket = new io(`ws://${WS_HOST}:3000`);
+
+            this.socketId = sessionStorage.getItem('socketId');
         }
 
         this.$root.board = this.board;
@@ -158,6 +123,29 @@ export default {
         
         this.$root.lifeCount = this.lifeCount;
         this.$root.lifeLeft  = this.lifeLeft;
+
+        let defaultPlayerBoard = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+
+        this.player = this._player ?? {
+            board : defaultPlayerBoard,
+            life  : 3
+        };
 
         // Si en mode spec
         if (this.isDisabled) {
@@ -254,10 +242,6 @@ export default {
                 this.end()
                 return;
             }
-
-            this.updateSession({
-                life : --this.player.life
-            });
         },
 
         end() {
@@ -269,25 +253,12 @@ export default {
             if (this.isDisabled) {
                 return;
             }
-
-            if (!this.isMultiplayer) {
-                return;
-            }
             
             this.socket.emit('update-board', {
-                player : this.player,
-                board  : this.playerBoard
+                socketId : this.socketId,
+                board    : this.player.board
             });
-        },
-
-        updateSession(data) {
-
-            const player = JSON.parse(sessionStorage.getItem('player'));
-
-            const newPlayer = extend({}, player, data);
-
-            sessionStorage.setItem('player', JSON.stringify(newPlayer));
-        },
+        }
     }
 }
 

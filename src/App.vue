@@ -2,6 +2,7 @@
   <nav>
     <router-link :to="{ name : 'home' }">Home</router-link>
     <router-link :to="{ name : 'lobby' }">Lobby</router-link>
+    <router-link :to="{ name : 'multi-player-home' }">Multiplayer Home</router-link>
     <router-link :to="{ name : 'multi-player-game' }">Multiplayer Game</router-link>
     <router-link :to="{ name : 'admin' }">Admin</router-link>
   </nav>
@@ -27,7 +28,7 @@ export default {
 
     mounted() {
       // OMG FIX THIS PLZ
-      window.WS_HOST = '172.24.38.248';
+      window.WS_HOST = '172.17.254.249';
     },
 
     methods: {

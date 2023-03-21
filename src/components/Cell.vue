@@ -78,9 +78,6 @@ export default {
         this.$parent.player.board[this.x][this.y] = value;
 
         this.$parent.updateBoard();
-        this.$parent.updateSession({
-            board : this.$parent.playerBoard
-        });
     },
 
     methods : {

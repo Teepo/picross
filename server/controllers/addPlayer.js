@@ -1,4 +1,4 @@
-import { lobby } from './../service/lobby.js';
+import { lobby  } from './../service/lobby.js';
 import { Player } from './../service/player.js';
 
 import { UserAlreadyExistError } from './../../errors/index.js';
@@ -16,7 +16,7 @@ export default function(socket, data) {
         
         lobby.addPlayer(player);
         
-        socket.emit('add-player', { player : player.get() });
+        socket.emit('add-player', { socketId : socket.id });
     }
     catch(e) {
         

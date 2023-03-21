@@ -4,11 +4,11 @@ import { UserNotExistError } from './../../errors/index.js';
 
 export default function(socket, data) {
 
-    const { player, board } = data;
+    const { socketId, board } = data;
     
     try {
         
-        const p = lobby.getPlayerBySocketId(player.socketId);
+        const p = lobby.getPlayerBySocketId(socketId);
 
         p.board = board;
 
@@ -19,7 +19,7 @@ export default function(socket, data) {
     catch(e) {
         
         if (e instanceof UserNotExistError) {
-            console.error("updateBoard > player with socket id doesn't exist", player.socketId);
+            console.error("updateBoard > player with socket id doesn't exist", socketId);
         }
     }
 }
