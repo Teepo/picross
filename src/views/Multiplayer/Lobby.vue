@@ -66,6 +66,10 @@ export default {
             this.socket.emit('get-players');
         });
 
+        this.socket.on('start', () => {
+            this.$router.push({ name: 'multi-player-game' });
+        });
+
         this.socket.on('disconnect', () => {
             sessionStorage.clear();
         });

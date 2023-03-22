@@ -4,6 +4,7 @@ const routes = {
     'get-players'         : import('./../controllers/getPlayers.js'),
     'set-player-is-ready' : import('./../controllers/setPlayerIsReady.js'),
     'update-board'        : import('./../controllers/updateBoard.js'),
+    'start'               : import('./../controllers/start.js'),
 };
 
 export async function wsRouter(socket) {

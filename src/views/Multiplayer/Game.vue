@@ -1,6 +1,6 @@
 <template>
     <template v-if="this.player">
-        <Picross is-multiplayer :_player="this.player" />
+        <Picross is-multiplayer :_player="this.player" :_board="this.player.boardToClear" />
     </template>
 </template>
 
@@ -23,30 +23,24 @@ export default {
 
     async mounted () {
 
-        this.socket = new io(`ws://${WS_HOST}:3000`);
+        const socket = new io(`ws://${WS_HOST}:3000`);
 
-        this.socketId = sessionStorage.getItem('socketId');
+        const socketId = sessionStorage.getItem('socketId');
 
-        if (!this.socketId) {
+        if (!socketId) {
             this.$router.push({ name: 'multi-player-home' });
         }
         
-        this.socket.emit('get-player', { socketId : this.socketId });
-        this.socket.on('get-player', player => {
+        socket.emit('get-player', { socketId : socketId });
+        socket.on('get-player', player => {
+            console.log(player)
             this.player = player;
         });
 
-        this.socket.on('disconnect', () => {
+        socket.on('disconnect', () => {
             sessionStorage.clear();
         });
     },
-
-    data() {
-
-        return {
-            player : null
-        }
-    }
 }
 
 </script>

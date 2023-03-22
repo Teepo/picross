@@ -8,13 +8,13 @@ export default function(socket, data) {
 
     try {
         
-        const p = lobby.getPlayerBySocketId(socketId);
+        const player = lobby.getPlayerBySocketId(socketId);
 
-        p.isReady = !p.isReady;
+        player.isReady = !player.isReady;
 
-        socket.emit('set-player-is-ready', { player : p.get() });
+        socket.emit('set-player-is-ready', { player : player });
 
-        socket.broadcast.emit('set-player-is-ready', { player : p.get() });
+        socket.broadcast.emit('set-player-is-ready', { player : player });
     }
     catch(e) {
         

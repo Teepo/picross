@@ -80,7 +80,7 @@ export default {
         return {
 
             socket : null,
-            player : null,
+            player : this._player,
 
             isDisabled : this._isDisabled,
             
@@ -96,7 +96,7 @@ export default {
 
     async mounted() {
 
-        if (this.isMultiplayer) {
+        if (this.isMultiplayer && !this.isDisabled) {
             
             this.socket = new io(`ws://${WS_HOST}:3000`);
 

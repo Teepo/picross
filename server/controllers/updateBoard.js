@@ -8,12 +8,12 @@ export default function(socket, data) {
     
     try {
         
-        const p = lobby.getPlayerBySocketId(socketId);
+        const player = lobby.getPlayerBySocketId(socketId);
 
-        p.board = board;
+        player.board = board;
 
         socket.broadcast.emit('update-board', {
-            player : p.get()
+            player : player
         });
     }
     catch(e) {

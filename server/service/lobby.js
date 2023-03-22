@@ -20,15 +20,13 @@ class Lobby {
 
     getPlayers() {
 
-        return this.#players.map(p => {
-            return p.get();
-        });
+        return this.#players;
     }
 
     getPlayerBySocketId(socketId) {
 
         let player;
-        if (!(player = this.#players.find(p => p.socket.id === socketId))) {
+        if (!(player = this.#players.find(p => p.socketId === socketId))) {
             throw new UserNotExistError;
         }
 
