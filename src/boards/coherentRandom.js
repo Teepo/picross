@@ -1,4 +1,4 @@
-export function coherentRandom(rows, columns) {
+export default function (rows, columns) {
 
     // Créer une grille vide
     const grid = new Array(rows).fill(null).map(() => new Array(columns).fill(null));

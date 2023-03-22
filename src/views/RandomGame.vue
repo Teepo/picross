@@ -4,7 +4,7 @@
 
 <script>
 
-import {coherentRandom} from './../boards/coherentRandom.js';
+import coherentRandom from './../boards/coherentRandom.js';
 
 import Picross from './../components/Picross';
 
