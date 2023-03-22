@@ -92,8 +92,8 @@ nav {
     "h cell cell cell cell cell cell cell cell cell cell cell"
     "h cell cell cell cell cell cell cell cell cell cell cell"
     "h cell cell cell cell cell cell cell cell cell cell cell";
-    grid-template-rows: 60px 1fr 455px;
-    grid-template-columns: 60px 1fr;
+    grid-template-rows: max-content;
+    grid-template-columns: max-content;
 }
 
 .tasks {
@@ -111,6 +111,7 @@ nav {
 
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 }
 
 .tasks-v {
@@ -122,8 +123,14 @@ nav {
         
         flex-direction: column;
         width: 30px;
+        padding: 5px 0;
         margin: 0 .1px;
         text-align: center;
+
+        span {
+            display: inline-block;
+            margin-bottom: 2px;
+        }
     }
 }
 
@@ -136,7 +143,7 @@ nav {
         
         height: 30px;
         margin: .1px 0;
-        padding-right: 5px;
+        padding: 0 5px;
 
         span {
             display: inline-block;
