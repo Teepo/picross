@@ -17,9 +17,7 @@ export default {
     data() {
 
         return {
-            socket   : null,
-            socketId : null,
-            player   : null
+            player : null
         }
     },
 

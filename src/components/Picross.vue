@@ -49,8 +49,6 @@
 
 <script>
 
-const extend = require('extend');
-
 const { io } = require('socket.io-client');
 
 import Cell from './../components/Cell.vue';
@@ -78,7 +76,6 @@ export default {
 
         return {
 
-            socket : null,
             player : null,
 
             isDisabled : this._isDisabled,
