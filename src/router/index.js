@@ -23,6 +23,10 @@ const routes = [{
     name : 'lobby',
     component: () => import(/* webpackChunkName: "views/lobby" */ './../views/Multiplayer/Lobby.vue')
   }, {
+    path: '/random-game',
+    name : 'random-game',
+    component: () => import(/* webpackChunkName: "views/lobby" */ './../views/RandomGame.vue')
+  }, {
     path: '/admin',
     name : 'admin',
     component: () => import(/* webpackChunkName: "views/admin" */ './../views/Admin.vue')

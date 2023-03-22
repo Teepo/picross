@@ -1,6 +1,7 @@
 <template>
   <nav>
     <router-link :to="{ name : 'home' }">Home</router-link>
+    <router-link :to="{ name : 'random-game' }">Random game</router-link>
     <router-link :to="{ name : 'lobby' }">Lobby</router-link>
     <router-link :to="{ name : 'multi-player-home' }">Multiplayer Home</router-link>
     <router-link :to="{ name : 'multi-player-game' }">Multiplayer Game</router-link>
