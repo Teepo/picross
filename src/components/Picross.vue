@@ -88,7 +88,7 @@ export default {
                 x : 15,
                 y : 15
             },
-            board : this._board,
+            board : this._board ?? this._player.boardToClear,
             lifeCount : 3,
             lifeLeft  : 3,
         };
@@ -96,9 +96,9 @@ export default {
 
     async mounted() {
 
+        this.socket = new io(`ws://${WS_HOST}:3000`);
+
         if (this.isMultiplayer && !this.isDisabled) {
-            
-            this.socket = new io(`ws://${WS_HOST}:3000`);
 
             this.socketId = sessionStorage.getItem('socketId');
         }
