@@ -79,8 +79,8 @@ export default {
 
         return {
 
-            socket : null,
-            player : this._player,
+            socket   : null,
+            player   : this._player,
 
             isDisabled : this._isDisabled,
             
@@ -94,9 +94,11 @@ export default {
         };
     },
 
-    async mounted() {
+    beforeMount() {
 
         this.socket = new io(`ws://${WS_HOST}:3000`);
+
+        this.$store.dispatch('SET_SOCKET', this.socket);
 
         if (this.isMultiplayer && !this.isDisabled) {
 
@@ -131,15 +133,6 @@ export default {
             board : defaultPlayerBoard,
             life  : 3
         };
-
-        // Si en mode spec
-        if (this.isDisabled) {
-
-            // En mode spec, on update tout le board
-            this.socket.on('update-board', data => {
-                this.player.board = data.player.board;
-            });
-        }
 
         if (this.isMultiplayer) {
 
@@ -242,10 +235,35 @@ export default {
             if (!this.isMultiplayer) {
                 return;
             }
-            
+
             this.socket.emit('update-board', {
                 socketId : this.socketId,
                 board    : this.player.board
+            });
+        },
+
+        /**
+         * @param {Number} x
+         * @param {Number} y
+         * @param {Number} state
+         *
+         */
+         updateCell(x = null, y = null, state = null) {
+
+            if (this.isDisabled) {
+                return;
+            }
+
+            if (!this.isMultiplayer) {
+                return;
+            }
+
+            this.socket.emit('update-board', {
+                socketId : this.socketId,
+                board    : this.player.board,
+                x        : x,
+                y        : y,
+                state    : state
             });
         }
     }

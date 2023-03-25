@@ -22,9 +22,15 @@
 
 <script>
 
+import { mapGetters } from 'vuex';
+
 import Svg from './Svg.vue';
 
 import { AudioManager } from './../modules/AudioManager.js';
+
+const IS_NEUTRAL  = 1;
+const IS_SELECTED = 1;
+const IS_CROSSED  = -1;
 
 export default {
 
@@ -35,6 +41,11 @@ export default {
         _y : { type : Number, required : true },
         _isSelected : { type : Boolean, required : true },
         _isCrossed  : { type : Boolean, required : true },
+    },
+
+    computed: {
+        // mix the getters into computed with object spread operator
+        ...mapGetters(['socket'])
     },
 
     data : function() {
@@ -65,6 +76,31 @@ export default {
         }
 
         this.$root.cells[this.x][this.y] = this;
+
+        if (this.$parent.isDisabled) {
+
+            this.socket.on('update-board', data => {
+
+                if (data.player.socketId !== this.$parent.player.socketId) {
+                    return;
+                }
+
+                if (!data.x || !data.y || !data.state) {
+                    return;
+                }
+
+                if (data.x !== this.x || data.y  !== this.y) {
+                    return;
+                }
+
+                if (data.state === IS_SELECTED) {
+                    this.isSelected = true;
+                }
+                else if (data.state === IS_CROSSED) {
+                    this.isCrossed = true;
+                }
+            });
+        }
     },
 
     updated() {
@@ -77,7 +113,10 @@ export default {
 
         this.$parent.player.board[this.x][this.y] = value;
 
+        const state = this.isSelected ? IS_SELECTED : IS_CROSSED;
+
         this.$parent.updateBoard();
+        this.$parent.updateCell(this.x, this.y, state);
     },
 
     methods : {

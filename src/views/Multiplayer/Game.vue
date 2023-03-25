@@ -33,7 +33,6 @@ export default {
         
         socket.emit('get-player', { socketId : socketId });
         socket.on('get-player', player => {
-            console.log(player)
             this.player = player;
         });
 

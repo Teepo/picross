@@ -13,7 +13,10 @@ export default function(socket, data) {
         player.board = board;
 
         socket.broadcast.emit('update-board', {
-            player : player
+            player : player,
+            x      : data.x ?? null,
+            y      : data.y ?? null,
+            state  : data.state ?? null,
         });
     }
     catch(e) {
