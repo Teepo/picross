@@ -17,39 +17,25 @@
 
 <script>
 
-const { io } = require('socket.io-client');
-
-import Alert from './../../components/Alert';
+import { addPlayer } from './../../database/firebase/index.js'; 
 
 export default {
 
     methods: {
         
-        go() {
+        async go() {
 
             if (!this.login || this.login === '') {
                 return;
             }
-            
-            const socket = new io(`ws://${WS_HOST}:3000`);
 
-            socket.emit('add-player', {
+            const player = await addPlayer({
                 login : this.login
             });
 
-            // data is player or error
-            socket.on('add-player', data => {
+            sessionStorage.setItem('id', player.key);
 
-                const hasError = Alert.handleWSError(data);
-
-                if (hasError) {
-                    return;
-                }
-
-                sessionStorage.setItem('socketId', data.socketId);
-
-                this.$router.push({ name: 'lobby' });
-            });
+            this.$router.push({ name: 'lobby' });
         }
     }
 }

@@ -10,14 +10,18 @@
     "ws": "node ./server/index.js"
   },
   "dependencies": {
+    "@mdi/font": "^7.2.96",
+    "@mdi/js": "^7.2.96",
     "body-parser": "^1.20.2",
     "core-js": "^3.29.1",
     "extend": "^3.0.2",
+    "firebase": "^9.18.0",
     "register-service-worker": "^1.7.2",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
+    "vuetify": "^3.1.11",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
@@ -34,7 +38,7 @@
     "jsdoc": "^4.0.2",
     "postcss-loader": "^7.1.0",
     "regenerator-runtime": "^0.13.11",
-    "sass": "^1.59.3",
+    "sass": "^1.60.0",
     "sass-loader": "^13.2.1",
     "svgo": "^3.0.2",
     "svgo-loader": "^4.0.0",

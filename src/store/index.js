@@ -3,16 +3,16 @@ import { createStore } from 'vuex';
 export const store = createStore({
     state () {
         return {
-            socket : null,
+            db : null
         }
     },
     getters : {
-        socket (state) { return state.socket; }
+        db (state) { return state.db; }
     },
     mutations: {
-        STORE_SOCKET : (state, socket) => { state.socket = socket; },
+        STORE_DB : (state, db) => { state.db = db; },
     },
     actions: {
-        SET_SOCKET : ({ commit }, socket) => { commit('STORE_SOCKET', socket); },
+        SET_DB : ({ commit }, db) => { commit('STORE_DB', db); },
     }
 });

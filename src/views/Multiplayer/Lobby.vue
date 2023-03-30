@@ -1,85 +1,103 @@
 <template>
     
-    <div class="container">
-        <ul class="row">
-            <li class="col" v-for="player in players">
-                <div class="card">
-                    <div class="card-body">
-                        <strong class="card-title fw-bold d-block">{{ player.login }}</strong>
-                        <strong class="card-title fw-bold d-block">{{ player.socketId }}</strong>
-                        <button
-                            v-if="this.player && this.player.socketId == player.socketId"
-                            @click="setPlayerReady"
-                            :class="{ btn: true, 'mt-2' : true, 'btn-success': !player.isReady, 'btn-danger': player.isReady }"
-                        >
-                            <span v-if="!player.isReady">I'M READY</span>
-                            <span v-if="player.isReady">I'M NOT READY</span>
-                        </button>
-                        <strong class="d-block mt-2" v-else>Ready : {{ player.isReady }}</strong>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
+    <v-container class="fill-height">
+        <v-responsive class="d-flex align-center fill-height">
+
+            <v-container v-for="player in players">
+                <v-card>
+                    <v-card-item>
+                        <v-card-text>
+                            <strong class="d-block">{{ player.login }}</strong>
+                            <strong class="d-block">{{ player.id }}</strong>
+                            <v-btn
+                                v-if="this.player && this.player.id == player.id"
+                                @click="setPlayerReadyHandler"
+                                :class="{ btn: true, 'mt-2' : true, 'bg-green': !this.player.isReady, 'bg-red': this.player.isReady }"
+                            >
+                                <span v-if="!this.player.isReady">I'M READY</span>
+                                <span v-if="this.player.isReady">I'M NOT READY</span>
+                            </v-btn>
+                            <strong v-else>Ready : {{ player.isReady }}</strong>
+                        </v-card-text>
+                    </v-card-item>
+                </v-card>
+            </v-container>
+
+        </v-responsive>
+    </v-container>
 </template>
 
 <script>
 
-const { io } = require('socket.io-client');
+import { getPlayer, setPlayerReady, listenPlayers } from './../../database/firebase/index.js'; 
 
 export default {
 
     data() {
 
         return {
-            socket   : null,
-            socketId : null,
             player   : null,
             players  : []
         }
     },
 
-    mounted() {
+    async mounted() {
 
-        this.socketId = sessionStorage.getItem('socketId');
+        this.id = sessionStorage.getItem('id');
 
-        if (!this.socketId) {
+        if (!this.id) {
             this.$router.push({ name: 'multi-player-home' });
         }
 
-        this.socket = new io(`ws://${WS_HOST}:3000`);
+        this.player = await getPlayer(this.id);
+        
+        if (!this.player) {
+            this.cleanSessionAndGoBackToMultiplayerHome();
+        }
 
-        this.socket.emit('get-player', { socketId : this.socketId });
-        this.socket.on('get-player', player => {
-            this.player = player;
-        });
+        listenPlayers(data => {
 
-        this.socket.emit('get-players');
-        this.socket.on('get-players', players => {
-            this.players = players;
-        });
+            if (!this.players) {
+                this.players = [];
+            }
 
-        this.socket.on('set-player-is-ready', data => {
+            const { players, player, eventType } = data;
 
-            this.players.find(player => player.socketId == data.player.socketId).isReady = data.player.isReady;
+            if (this.players && player && this.players.some(p => p.id === player.id)) {
 
-            this.socket.emit('get-players');
-        });
+                if (eventType === 'onChildRemoved') {
+                    return this.cleanSessionAndGoBackToMultiplayerHome()
+                }
+                return;
+            }
 
-        this.socket.on('start', () => {
-            this.$router.push({ name: 'multi-player-game' });
-        });
-
-        this.socket.on('disconnect', () => {
-            sessionStorage.clear();
+            if (eventType === 'onChildAdded') {
+                this.players.push(player);
+            }
+            else if (eventType === 'onChildRemoved') {
+                
+                this.players = this.players.filter(p => {
+                    return p.id !== player.id;
+                });
+            }
+            else if (eventType === 'onValue') {
+                this.players = players;
+            }
         });
     },
 
     methods: {
 
-        setPlayerReady() {
+        setPlayerReadyHandler() {
 
-            this.socket.emit('set-player-is-ready', { socketId : this.socketId });
+            this.player.isReady = !this.player.isReady;
+
+            setPlayerReady(this.player.id, this.player.isReady);
+        },
+
+        cleanSessionAndGoBackToMultiplayerHome() {
+            sessionStorage.clear();
+            this.$router.push({ name: 'multi-player-home' });
         }
     }
 }

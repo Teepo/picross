@@ -25,8 +25,13 @@ const routes = [{
   }, {
     path: '/random-game',
     name : 'random-game',
-    component: () => import(/* webpackChunkName: "views/lobby" */ './../views/RandomGame.vue')
+    component: () => import(/* webpackChunkName: "views/random-game" */ './../views/RandomGame.vue')
   }, {
+    path: '/spec',
+    name : 'spec',
+    component: () => import(/* webpackChunkName: "views/spec" */ './../views/Spec.vue')
+  }
+  , {
     path: '/admin',
     name : 'admin',
     component: () => import(/* webpackChunkName: "views/admin" */ './../views/Admin.vue')
