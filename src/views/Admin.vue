@@ -2,12 +2,18 @@
 
     <v-container class="fill-height">
         <v-responsive class="d-flex align-center fill-height">
-            
+
             <v-container>
                 <button class="btn btn-primary" @click="start">START GAME</button>
+            </v-container>
+
+            <v-container>
                 <button class="btn btn-primary" @click="cleanPlayers">CLEAN PLAYERS</button>
             </v-container>
 
+            <div class="text-h6 mb-1">
+                PLAYERS
+            </div>
             <v-table class="text-left">
                 <thead>
                     <tr>
@@ -42,20 +48,66 @@
                     </tr>
                 </tbody>
             </v-table>
+
+            <v-container>
+                <button class="btn btn-primary" @click="cleanEvents">CLEAN EVENTS</button>
+            </v-container>
+
+            <div class="text-h6 mb-1">
+                EVENTS
+            </div>
+            <v-table class="text-left">
+                <thead>
+                    <tr>
+                        <th class="text-left">
+                            ID
+                        </th>
+                        <th class="text-left">
+                            TYPE
+                        </th>
+
+                        <th class="text-left">
+                            SENDER ID
+                        </th>
+
+                        <th class="text-left">
+                            VIEWS
+                        </th>
+
+                        <th class="text-left">
+                            DATA
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="event in events"
+                        :key="event.id"
+                        ref="events"
+                    >
+                        <td class="text-left">{{ event.id }}</td>
+                        <td>{{ event.type }}</td>
+                        <td>{{ event.senderId }}</td>
+                        <td>{{ event.views }}</td>
+                        <td>{{ event.data }}</td>
+                    </tr>
+                </tbody>
+            </v-table>
         </v-responsive>
   </v-container>
 </template>
 
 <script>
 
-import { deletePlayer, deletePlayers, listenPlayers } from './../database/firebase/index.js';
+import { deletePlayer, deletePlayers, listenPlayers, listenEvents, deleteEvents, sendEvent } from './../database/firebase/index.js';
 
 export default {
 
     data() {
 
         return {
-            players : []
+            players : [],
+            events  : []
         }
     },
 
@@ -70,15 +122,28 @@ export default {
             const { players, eventType } = data;
 
             if (eventType === 'onValue') {
-                this.players = players;
+                this.players = players ?? [];
             }
+        })
+
+        listenEvents(event => {
+
+            if (!this.events) {
+                this.events = [];
+            }
+
+            this.events.push(event)
         })
     },
 
     methods : {
 
         start() {
-            this.socket.emit('start');
+
+            sendEvent({
+                type     : 'start',
+                senderId : 'admin'
+            });
         },
         
         delete(id) {
@@ -95,6 +160,13 @@ export default {
             deletePlayers();
 
             this.players = [];
+        },
+
+        cleanEvents() {
+
+            deleteEvents();
+
+            this.events = [];
         },
     }
 }

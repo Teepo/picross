@@ -17,6 +17,11 @@
                                 <span v-if="!this.player.isReady">I'M READY</span>
                                 <span v-if="this.player.isReady">I'M NOT READY</span>
                             </v-btn>
+                            <v-btn
+                                v-if="this.player && this.player.id == player.id"
+                                @click="sendLittleMessage"
+                                :class="{ btn: true, 'mt-2' : true, 'bg-blue': true }"
+                            >SEND MESSAGE</v-btn>
                             <strong v-else>Ready : {{ player.isReady }}</strong>
                         </v-card-text>
                     </v-card-item>
@@ -29,7 +34,9 @@
 
 <script>
 
-import { getPlayer, setPlayerReady, listenPlayers } from './../../database/firebase/index.js'; 
+import { isIterable } from './../../utils/array'
+
+import { getPlayer, setPlayerReady, listenPlayers, listenEvents, setEventAsView, sendEvent } from './../../database/firebase/index.js';
 
 export default {
 
@@ -63,16 +70,11 @@ export default {
 
             const { players, player, eventType } = data;
 
-            if (this.players && player && this.players.some(p => p.id === player.id)) {
-
-                if (eventType === 'onChildRemoved') {
-                    return this.cleanSessionAndGoBackToMultiplayerHome()
-                }
-                return;
-            }
-
             if (eventType === 'onChildAdded') {
                 this.players.push(player);
+            }
+            else if (eventType === 'onChildRemoved' && this.player.id === player.id) {
+                return this.cleanSessionAndGoBackToMultiplayerHome();
             }
             else if (eventType === 'onChildRemoved') {
                 
@@ -84,6 +86,25 @@ export default {
                 this.players = players;
             }
         });
+
+        listenEvents(async event => {
+
+            const { id, type, senderId, data, views } = event;
+
+            if (this.player.id === senderId) {
+                return;
+            }
+
+            if (views && isIterable(views) && views.includes(this.player.id)) {
+                return;
+            }
+
+            await setEventAsView(id, this.player.id);
+
+            if (type === 'start') {
+                this.$router.push({ name: 'multi-player-game' });
+            }
+        })
     },
 
     methods: {
@@ -98,6 +119,17 @@ export default {
         cleanSessionAndGoBackToMultiplayerHome() {
             sessionStorage.clear();
             this.$router.push({ name: 'multi-player-home' });
+        },
+
+        sendLittleMessage() {
+
+            sendEvent({
+                type     : 'lol1',
+                senderId : this.player.id,
+                data : {
+                    title : 'test3'
+                }
+            });
         }
     }
 }

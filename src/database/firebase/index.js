@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+
 import { getDatabase, ref, remove, push, get, update, onChildAdded, onChildRemoved, onValue } from 'firebase/database';
 
 import { firebaseConfig } from './../../../config/firebase/index.mjs';
@@ -11,6 +12,29 @@ import { Player } from './../../../service/player.js';
 export const addPlayer = async data => {
 
     return await push(ref(firebaseStore, 'users/'), new Player(data));
+}
+
+export const sendEvent = async data => {
+
+    return await push(ref(firebaseStore, 'events/'), data);
+};
+
+export const listenEvents = callback => {
+
+    onChildAdded(ref(firebaseStore, 'events/'), event => {
+        callback({
+            ...{ id : event.key },
+            ...event.val()
+        });
+    });
+}
+
+export const deleteEvents = async () => {
+    return await remove(ref(firebaseStore, `events/`));
+}
+
+export const setEventAsView = async (eventId, playerId) => {
+    return await push(ref(firebaseStore, `events/${eventId}/views`), playerId);
 }
 
 export const listenPlayers = callback => {
@@ -27,7 +51,7 @@ export const listenPlayers = callback => {
 
     onValue(ref(firebaseStore, 'users/'), players => {
         callback({
-            players : transformPlayers(players.val()),
+            players : transformObject(players.val()),
             eventType : 'onValue'
         });
     });
@@ -74,13 +98,13 @@ export const setPlayerReady = async (id, value) => {
     });
 }
 
-function transformPlayers(players) {
+function transformObject(data) {
 
-    if (!players) {
+    if (!data) {
         return;
     }
 
-    return Object.entries(players).map(([id, value]) => {
+    return Object.entries(data).map(([id, value]) => {
         
         const obj = { id };
         
