@@ -12,7 +12,6 @@ import App from './App.vue'
 
 import './registerServiceWorker'
 
-import { store } from './store'
 import router from './router'
 
 import './scss/app.scss';
@@ -40,10 +39,10 @@ const vuetify = createVuetify({
         aliases,
         sets: { mdi }
     },
+    ssr: true,
 });
 
 createApp(App)
 .use(router)
-.use(store)
 .use(vuetify)
 .mount('#app')

@@ -22,8 +22,6 @@
 
 <script>
 
-import { mapGetters } from 'vuex';
-
 import Svg from './Svg.vue';
 
 import { AudioManager } from './../modules/AudioManager.js';
@@ -41,11 +39,6 @@ export default {
         _y : { type : Number, required : true },
         _isSelected : { type : Boolean, required : true },
         _isCrossed  : { type : Boolean, required : true },
-    },
-
-    computed: {
-        // mix the getters into computed with object spread operator
-        ...mapGetters(['socket'])
     },
 
     data : function() {

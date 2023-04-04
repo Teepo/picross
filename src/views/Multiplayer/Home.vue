@@ -1,18 +1,13 @@
 <template>
     
-    <div class="container">
-        
-        <form class="row g-3">
+    <v-sheet width="300" class="mt-10 mx-auto">
+        <v-form validate-on="submit" @submit.prevent="submit">
+            <v-text-field v-model="login" label="Login"></v-text-field>
             
-            <label for="login" class="form-label">Nickname</label>
+            <v-btn block class="bg-primary" @click="go">Submit</v-btn>
+        </v-form>
+    </v-sheet>
 
-            <div class="col auto mb-2">
-                <input type="text" class="form-control" id="login" v-model="login" placeholder="John Doe" required>
-            </div>
-
-            <button class="btn btn-primary" @click="go">GO</button>
-        </form>
-    </div>
 </template>
 
 <script>

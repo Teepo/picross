@@ -49,8 +49,6 @@
 
 <script>
 
-const { io } = require('socket.io-client');
-
 import Cell from './../components/Cell.vue';
 import Life from './../components/Life.vue';
 
@@ -79,8 +77,7 @@ export default {
 
         return {
 
-            socket   : null,
-            player   : this._player,
+            player : this._player,
 
             isDisabled : this._isDisabled,
             
@@ -96,13 +93,8 @@ export default {
 
     beforeMount() {
 
-        this.socket = new io(`ws://${WS_HOST}:3000`);
-
-        this.$store.dispatch('SET_SOCKET', this.socket);
-
         if (this.isMultiplayer && !this.isDisabled) {
-
-            this.socketId = sessionStorage.getItem('socketId');
+            this.id = sessionStorage.getItem('id');
         }
 
         this.$root.board = this.board;

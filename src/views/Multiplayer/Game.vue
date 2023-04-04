@@ -6,7 +6,7 @@
 
 <script>
 
-const { io } = require('socket.io-client');
+import { getPlayer } from './../../database/firebase/index.js';
 
 import Picross from './../../components/Picross';
 
@@ -23,22 +23,14 @@ export default {
 
     async mounted () {
 
-        const socket = new io(`ws://${WS_HOST}:3000`);
+        this.id = sessionStorage.getItem('id');
 
-        const socketId = sessionStorage.getItem('socketId');
-
-        if (!socketId) {
+        if (!this.id) {
             this.$router.push({ name: 'multi-player-home' });
+            return;
         }
         
-        socket.emit('get-player', { socketId : socketId });
-        socket.on('get-player', player => {
-            this.player = player;
-        });
-
-        socket.on('disconnect', () => {
-            sessionStorage.clear();
-        });
+        this.player = await getPlayer(this.id);
     },
 }
 

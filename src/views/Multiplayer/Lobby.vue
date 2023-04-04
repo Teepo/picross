@@ -3,7 +3,7 @@
     <v-container class="fill-height">
         <v-responsive class="d-flex align-center fill-height">
 
-            <v-container v-for="player in players">
+            <v-container v-for="player in players" :key="player.id">
                 <v-card>
                     <v-card-item>
                         <v-card-text>
@@ -20,7 +20,7 @@
                             <v-btn
                                 v-if="this.player && this.player.id == player.id"
                                 @click="sendLittleMessage"
-                                :class="{ btn: true, 'mt-2' : true, 'bg-blue': true }"
+                                :class="{ btn: true, 'mt-2 ml-4' : true, 'bg-blue': true }"
                             >SEND MESSAGE</v-btn>
                             <strong v-else>Ready : {{ player.isReady }}</strong>
                         </v-card-text>

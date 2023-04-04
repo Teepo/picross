@@ -4,11 +4,11 @@
         <v-responsive class="d-flex align-center fill-height">
 
             <v-container>
-                <button class="btn btn-primary" @click="start">START GAME</button>
+                <v-btn class="bg-primary" @click="start">START GAME</v-btn>
             </v-container>
 
             <v-container>
-                <button class="btn btn-primary" @click="cleanPlayers">CLEAN PLAYERS</button>
+                <v-btn class="bg-primary" @click="cleanPlayers">CLEAN PLAYERS</v-btn>
             </v-container>
 
             <div class="text-h6 mb-1">
@@ -34,11 +34,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr
-                        v-for="player in players"
-                        :key="player.id"
-                        ref="players"
-                    >
+                    <tr v-for="player in players" :key="player.id">
                         <td class="text-left">{{ player.id }}</td>
                         <td>{{ player.login }}</td>
                         <td>{{ player.isReady }}</td>
@@ -50,7 +46,7 @@
             </v-table>
 
             <v-container>
-                <button class="btn btn-primary" @click="cleanEvents">CLEAN EVENTS</button>
+                <v-btn class="bg-primary" @click="cleanEvents">CLEAN EVENTS</v-btn>
             </v-container>
 
             <div class="text-h6 mb-1">

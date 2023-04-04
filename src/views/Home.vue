@@ -1,12 +1,12 @@
 <template>
     
     <div class="container">
-        <router-link :to="{name : 'one-player'}" class="card">
-            <button type="button" class="btn btn-primary">Single player</button>
+        <router-link :to="{ name : 'one-player' }" class="card">
+            <v-btn class="bg-primary">SINGLE PLAYER</v-btn>
         </router-link>
 
-        <router-link :to="{name : 'multi-player-home'}" class="card">
-            <button type="button" class="btn btn-primary">Multiplayer</button>
+        <router-link :to="{ name : 'multi-player-home' }" class="card">
+            <v-btn class="bg-primary">MULTIPLAYER</v-btn>
         </router-link>
     </div>
 </template>

@@ -6,7 +6,7 @@
 
 <script>
 
-const { io } = require('socket.io-client');
+import { listenPlayers } from './../database/firebase/index.js';
 
 import Picross from './../components/Picross.vue';
 
@@ -17,19 +17,24 @@ export default {
     data() {
 
         return {
-            socket  : null,
             players : false
         }
     },
 
     mounted() {
 
-        this.socket = new io(`ws://${WS_HOST}:3000`);
+        listenPlayers(data => {
 
-        this.socket.emit('get-players');
-        this.socket.on('get-players', players => {
-            this.players = players;
-        });
+            if (!this.players) {
+                this.players = [];
+            }
+
+            const { players, eventType } = data;
+
+            if (eventType === 'onValue') {
+                this.players = players ?? [];
+            }
+        })
     },
 
     methods : {
