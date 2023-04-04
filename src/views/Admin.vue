@@ -95,7 +95,7 @@
 
 <script>
 
-import { deletePlayer, deletePlayers, listenPlayers, listenEvents, deleteEvents, sendEvent } from './../database/firebase/index.js';
+import { deletePlayer, deletePlayers, listenPlayers, listenEvents, deleteEvents, sendEvent, giveBoardToClearToPlayers } from './../database/firebase/index.js';
 
 export default {
 
@@ -134,7 +134,9 @@ export default {
 
     methods : {
 
-        start() {
+        async start() {
+
+            await giveBoardToClearToPlayers(this.players.map(player => player.id));
 
             sendEvent({
                 type     : 'start',

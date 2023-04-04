@@ -89,7 +89,7 @@ export default {
 
         listenEvents(async event => {
 
-            const { id, type, senderId, data, views } = event;
+            const { id, type, senderId, views } = event;
 
             if (this.player.id === senderId) {
                 return;

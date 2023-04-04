@@ -1,5 +1,5 @@
 <template>
-    <template v-for="player in players">
+    <template v-for="player in players" :key="player.id">
         <Picross _is-disabled is-multiplayer :_player="player" />
     </template>
 </template>

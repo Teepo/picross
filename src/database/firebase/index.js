@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 
-import { getDatabase, ref, remove, push, get, update, onChildAdded, onChildRemoved, onValue } from 'firebase/database';
+import { getDatabase, ref, remove, push, get, update, updateDoc, onChildAdded, onChildRemoved, onValue } from 'firebase/database';
 
 import { firebaseConfig } from './../../../config/firebase/index.mjs';
 
@@ -8,6 +8,8 @@ export const firebaseApp   = initializeApp(firebaseConfig);
 export const firebaseStore = getDatabase(firebaseApp);
 
 import { Player } from './../../../service/player.js';
+
+import coherentRandom from './../../boards/coherentRandom';
 
 export const addPlayer = async data => {
 
@@ -68,7 +70,6 @@ export const listenPlayers = callback => {
 }
 
 export const deletePlayers = async () => {
-
     return await remove(ref(firebaseStore, `users/`));
 }
 
@@ -95,6 +96,24 @@ export const setPlayerReady = async (id, value) => {
 
     return await update(ref(firebaseStore, `users/${id}`), {
         isReady : value
+    });
+}
+
+export const giveBoardToClearToPlayers = async ids => {
+
+    const boardToClear = coherentRandom(15, 15);
+
+    return await update(ref(firebaseStore, `users/${id}/boardToClear`), {
+        boardToClear : boardToClear
+    });
+}
+
+export const updatePlayerBoard = async data => {
+
+    const { id, board, x, y, state } = data;
+
+    return await update(ref(firebaseStore, `users/${id}/board`), {
+        board : board
     });
 }
 

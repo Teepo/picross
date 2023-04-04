@@ -49,6 +49,8 @@
 
 <script>
 
+import { updatePlayerBoard } from './../database/firebase/index.js';
+
 import Cell from './../components/Cell.vue';
 import Life from './../components/Life.vue';
 
@@ -228,9 +230,9 @@ export default {
                 return;
             }
 
-            this.socket.emit('update-board', {
-                socketId : this.socketId,
-                board    : this.player.board
+            updatePlayerBoard({
+                id    : this.id,
+                board : this.player.board
             });
         },
 
@@ -250,12 +252,12 @@ export default {
                 return;
             }
 
-            this.socket.emit('update-board', {
-                socketId : this.socketId,
-                board    : this.player.board,
-                x        : x,
-                y        : y,
-                state    : state
+            updatePlayerBoard({
+                id    : this.id,
+                board : this.player.board,
+                x     : x,
+                y     : y,
+                state : state
             });
         }
     }
