@@ -49,7 +49,9 @@
 
 <script>
 
-import { updatePlayerBoard } from './../database/firebase/index.js';
+import { isIterable } from './../utils/array'
+
+import { updatePlayerBoard, listenEvents, setEventAsView } from './../database/firebase/index.js';
 
 import Cell from './../components/Cell.vue';
 import Life from './../components/Life.vue';
@@ -87,7 +89,7 @@ export default {
                 x : 15,
                 y : 15
             },
-            board : this._board ?? this._player.boardToClear,
+            board : this._board,
             lifeCount : 3,
             lifeLeft  : 3,
         };
@@ -132,6 +134,25 @@ export default {
 
             // on récupère l'état du board
             this.updateBoard();
+
+            listenEvents(async event => {
+
+                const { id, type, senderId, views } = event;
+
+                if (this.player.id === senderId) {
+                    return;
+                }
+
+                if (views && isIterable(views) && views.includes(this.player.id)) {
+                    return;
+                }
+
+                await setEventAsView(id, this.player.id);
+
+                if (type === 'return_to_lobby') {
+                    this.$router.push({ name: 'lobby' });
+                }
+            });
         }
     },
 
@@ -264,10 +285,3 @@ export default {
 }
 
 </script>
-
-<style scoped>
-.container {
-    display: block;
-    width: auto;
-}
-</style>

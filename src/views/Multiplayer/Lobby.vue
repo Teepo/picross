@@ -104,7 +104,7 @@ export default {
             if (type === 'start') {
                 this.$router.push({ name: 'multi-player-game' });
             }
-        })
+        });
     },
 
     methods: {

@@ -7,10 +7,6 @@ const routes = [{
     name : 'home',
     component: Home,
   }, {
-    path: '/one-player',
-    name : 'one-player',
-    component: () => import(/* webpackChunkName: "views/one-player" */ './../views/OnePlayer.vue')
-  }, {
     path: '/multi-player/home',
     name : 'multi-player-home',
     component: () => import(/* webpackChunkName: "views/multi-player-home" */ './../views/Multiplayer/Home.vue')

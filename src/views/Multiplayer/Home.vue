@@ -1,7 +1,7 @@
 <template>
     
     <v-sheet width="300" class="mt-10 mx-auto">
-        <v-form validate-on="submit" @submit.prevent="submit">
+        <v-form validate-on="submit" @submit.prevent="go">
             <v-text-field v-model="login" label="Login"></v-text-field>
             
             <v-btn block class="bg-primary" @click="go">Submit</v-btn>
@@ -15,6 +15,13 @@
 import { addPlayer } from './../../database/firebase/index.js'; 
 
 export default {
+
+    data() {
+
+        return {
+            login : null
+        };
+    },
 
     methods: {
         

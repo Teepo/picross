@@ -1,7 +1,10 @@
 <template>
-    <template v-for="player in players" :key="player.id">
-        <Picross _is-disabled is-multiplayer :_player="player" />
-    </template>
+
+    <div class="grids">
+        <template v-for="player in players" :key="player.id">
+            <Picross _is-disabled is-multiplayer :_player="player" :_board="player.boardToClear" />
+        </template>
+    </div>
 </template>
 
 <script>
@@ -45,5 +48,11 @@ export default {
         }
     }
 }
-
 </script>
+
+<style scoped>
+.grids {
+    display: flex;
+    justify-content: center;
+}
+</style>

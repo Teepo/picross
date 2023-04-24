@@ -5,6 +5,7 @@
 
             <v-container>
                 <v-btn class="bg-primary" @click="start">START GAME</v-btn>
+                <v-btn class="bg-primary ml-5" @click="return_to_lobby">RETURN TO LOBBY</v-btn>
             </v-container>
 
             <v-container>
@@ -140,6 +141,14 @@ export default {
 
             sendEvent({
                 type     : 'start',
+                senderId : 'admin'
+            });
+        },
+
+        async return_to_lobby() {
+
+            sendEvent({
+                type     : 'return_to_lobby',
                 senderId : 'admin'
             });
         },

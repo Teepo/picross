@@ -24,9 +24,14 @@ export const sendEvent = async data => {
 export const listenEvents = callback => {
 
     onChildAdded(ref(firebaseStore, 'events/'), event => {
+
+        const val = event.val()
+
+        val.views = val.views ? Object.values(val.views) : [];
+
         callback({
             ...{ id : event.key },
-            ...event.val()
+            ...val
         });
     });
 }
@@ -103,16 +108,20 @@ export const giveBoardToClearToPlayers = async ids => {
 
     const boardToClear = coherentRandom(15, 15);
 
-    return await update(ref(firebaseStore, `users/${id}/boardToClear`), {
-        boardToClear : boardToClear
-    });
+
+    for await (const id of ids) {
+
+        await update(ref(firebaseStore, `users/${id}`), {
+            boardToClear : boardToClear
+        })
+    }
 }
 
-export const updatePlayerBoard = async data => {
+export const updatePlayerBoard = data => {
 
     const { id, board, x, y, state } = data;
 
-    return await update(ref(firebaseStore, `users/${id}/board`), {
+    update(ref(firebaseStore, `users/${id}`), {
         board : board
     });
 }
