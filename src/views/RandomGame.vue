@@ -13,6 +13,7 @@ export default {
     components : { Picross },
     
     data() {
+        
         return {
             board : coherentRandom(15, 15)
         }

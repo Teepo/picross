@@ -74,6 +74,46 @@ export const listenPlayers = callback => {
     });
 }
 
+export const onChildAddedPlayer = callback => {
+
+    onChildAdded(ref(firebaseStore, 'users/'), player => {
+        callback({
+            player : {
+                ...{ id : player.key },
+                ...player.val()
+            },
+            eventType : 'onChildAdded'
+        });
+    });
+}
+
+export const onChildAddedPlayerBoard = (id, callback) => {
+
+    onValue(ref(firebaseStore, `users/${id}/board`), board => {
+
+        callback(board.val());
+    });
+}
+
+export const listenPlayer = (id, callback) => {
+
+    onValue(ref(firebaseStore, `users/${id}`), event => {
+
+        callback({
+            ...{ id : event.key },
+            ...event.val()
+        });
+    });
+}
+
+export const listenPlayerBoard = (id, callback) => {
+
+    onValue(ref(firebaseStore, `users/${id}/board`), board => {
+
+        callback(board.val());
+    });
+}
+
 export const deletePlayers = async () => {
     return await remove(ref(firebaseStore, `users/`));
 }
@@ -108,7 +148,6 @@ export const giveBoardToClearToPlayers = async ids => {
 
     const boardToClear = coherentRandom(15, 15);
 
-
     for await (const id of ids) {
 
         await update(ref(firebaseStore, `users/${id}`), {
@@ -119,10 +158,19 @@ export const giveBoardToClearToPlayers = async ids => {
 
 export const updatePlayerBoard = data => {
 
-    const { id, board, x, y, state } = data;
+    const { id, board } = data;
 
     update(ref(firebaseStore, `users/${id}`), {
         board : board
+    });
+}
+
+export const updatePlayerBoardCell = async data => {
+
+    const { id, x, y, state } = data;
+
+    update(ref(firebaseStore, `users/${id}/board/${x}`), {
+        [y] : state
     });
 }
 

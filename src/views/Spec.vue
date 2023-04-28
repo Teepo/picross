@@ -1,7 +1,7 @@
 <template>
 
     <div class="grids">
-        <template v-for="player in players" :key="player.id">
+        <template v-for="player in players" :key="player.seed">
             <Picross _is-disabled is-multiplayer :_player="player" :_board="player.boardToClear" />
         </template>
     </div>
@@ -9,7 +9,7 @@
 
 <script>
 
-import { listenPlayers } from './../database/firebase/index.js';
+import { onChildAddedPlayer, onChildAddedPlayerBoard } from './../database/firebase/index.js';
 
 import Picross from './../components/Picross.vue';
 
@@ -20,30 +20,33 @@ export default {
     data() {
 
         return {
-            players : false
+            players : []
         }
     },
 
     mounted() {
 
-        listenPlayers(data => {
+        onChildAddedPlayer(data => {
 
-            if (!this.players) {
-                this.players = [];
-            }
+            const { player } = data;
 
-            const { players, eventType } = data;
+            player.seed = (new Date).getTime()
 
-            if (eventType === 'onValue') {
-                this.players = players ?? [];
-            }
+            this.players.push(player);
+
+            onChildAddedPlayerBoard(player.id, board => {
+                
+                const p = this.players.find(p => p.id === player.id);
+                
+                p.board = board;
+                p.seed = (new Date).getTime()
+            })
         })
     },
 
     methods : {
 
         start() {
-
             this.socket.emit('start');
         }
     }

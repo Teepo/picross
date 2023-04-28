@@ -13,9 +13,9 @@
 
         <div class="grid-wrapper">
             <div class="grid tasks tasks-v">
-                <div v-for="items in this.getTasksV()" class="task">
+                <div v-for="(items, x) in this.getTasksV()" class="task" :key="x">
                     <template v-if="items.length > 0">
-                        <span v-for="item in items">{{ item }}</span>
+                        <span v-for="(item, y) in items" :key="y">{{ item }}</span>
                     </template>
                     <template v-else>
                         <span>0</span>
@@ -23,9 +23,9 @@
                 </div>
             </div>
             <div class="grid tasks tasks-h">
-                <div v-for="items in this.getTasksH()" class="task">
+                <div class="task" v-for="(items, x) in this.getTasksH()" :key="x">
                     <template v-if="items.length > 0">
-                        <span v-for="item in items">{{ item }}</span>
+                        <span v-for="(item, y) in items" :key="y">{{ item }}</span>
                     </template>
                     <template v-else>
                         <span>0</span>
@@ -49,9 +49,7 @@
 
 <script>
 
-import { isIterable } from './../utils/array'
-
-import { updatePlayerBoard, listenEvents, setEventAsView } from './../database/firebase/index.js';
+import { updatePlayerBoard, updatePlayerBoardCell } from './../database/firebase/index.js';
 
 import Cell from './../components/Cell.vue';
 import Life from './../components/Life.vue';
@@ -134,25 +132,6 @@ export default {
 
             // on récupère l'état du board
             this.updateBoard();
-
-            listenEvents(async event => {
-
-                const { id, type, senderId, views } = event;
-
-                if (this.player.id === senderId) {
-                    return;
-                }
-
-                if (views && isIterable(views) && views.includes(this.player.id)) {
-                    return;
-                }
-
-                await setEventAsView(id, this.player.id);
-
-                if (type === 'return_to_lobby') {
-                    this.$router.push({ name: 'lobby' });
-                }
-            });
         }
     },
 
@@ -273,9 +252,8 @@ export default {
                 return;
             }
 
-            updatePlayerBoard({
+            updatePlayerBoardCell({
                 id    : this.id,
-                board : this.player.board,
                 x     : x,
                 y     : y,
                 state : state

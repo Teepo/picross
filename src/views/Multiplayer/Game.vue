@@ -6,7 +6,9 @@
 
 <script>
 
-import { getPlayer } from './../../database/firebase/index.js';
+import { isIterable } from './../../utils/array'
+
+import { getPlayer, listenEvents, setEventAsView } from './../../database/firebase/index.js';
 
 import Picross from './../../components/Picross';
 
@@ -31,6 +33,25 @@ export default {
         }
         
         this.player = await getPlayer(this.id);
+
+        listenEvents(async event => {
+
+            const { id, type, senderId, views } = event;
+
+            if (this.player.id === senderId) {
+                return;
+            }
+
+            if (views && isIterable(views) && views.includes(this.player.id)) {
+                return;
+            }
+
+            await setEventAsView(id, this.player.id);
+
+            if (type === 'return_to_lobby') {
+                this.$router.push({ name: 'lobby' });
+            }
+        });
     },
 }
 
