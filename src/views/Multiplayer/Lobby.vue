@@ -4,20 +4,22 @@
         <v-responsive class="d-flex align-center fill-height">
 
             <v-container v-for="player in players" :key="player.id">
-                <v-card>
+                <v-card :theme="player.isReady ? 'is-ready' : ''">
                     <v-card-item>
                         <v-card-text>
-                            <strong class="d-block">{{ player.login }}</strong>
-                            <strong class="d-block">{{ player.id }}</strong>
-                            <v-btn
-                                v-if="this.player && this.player.id == player.id"
-                                @click="setPlayerReadyHandler"
-                                :class="{ btn: true, 'mt-2' : true, 'bg-green': !this.player.isReady, 'bg-red': this.player.isReady }"
-                            >
-                                <span v-if="!this.player.isReady">I'M READY</span>
-                                <span v-if="this.player.isReady">I'M NOT READY</span>
-                            </v-btn>
-                            <strong v-else>Ready : {{ player.isReady }}</strong>
+                            <v-row class="justify-space-between align-center">
+                                <strong class="font-weight-bold">{{ player.login }}</strong>
+                                <v-checkbox-btn
+                                    v-if="this.player && this.player.id == player.id"
+                                    @click="setPlayerReadyHandler"
+                                    :model-value="player.isReady"
+                                    label="Je suis prêt(e)"
+                                    ></v-checkbox-btn>
+                                <template v-else>
+                                    <v-icon v-if="player.isReady" icon="mdi-check" color="green-lighten-1"></v-icon>
+                                    <v-icon v-else icon="mdi-close" color="red-lighten-1"></v-icon>
+                                </template>
+                            </v-row>
                         </v-card-text>
                     </v-card-item>
                 </v-card>
@@ -126,6 +128,20 @@ export default {
             this.$router.push({ name: 'multi-player-home' });
         }
     }
-}
-
+};
 </script>
+
+<style lang="scss" scoped>
+.v-card {
+
+    border: 2px solid rgb(var(--v-theme-red-lighten-1));
+    transition: .2s border-color ease-in-out;
+
+    &.v-theme {
+
+        &--is-ready {
+            border-color: rgb(var(--v-theme-green-lighten-1));
+        }
+    }
+}
+</style>

@@ -8,6 +8,8 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 
+import colors from 'vuetify/lib/util/colors';
+
 import App from './App.vue'
 
 import './registerServiceWorker'
@@ -30,8 +32,16 @@ const vuetify = createVuetify({
                 colors: {
                     primary: '#1867C0',
                     secondary: '#5CBBF6',
+                    'red-lighten-1' : colors.red.lighten1,
+                    'green-lighten-1' : colors.green.lighten1
                 },
             },
+            dark: {
+                colors: {
+                    'red-lighten-1' : colors.red.lighten1,
+                    'green-lighten-1' : colors.green.lighten1
+                }
+            }
         },
     },
     icons: {
