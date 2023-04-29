@@ -171,6 +171,15 @@ export const updatePlayerBoardCell = async data => {
     });
 }
 
+export const updatePlayerLife = async data => {
+
+    const { id, life } = data;
+
+    update(ref(firebaseStore, `users/${id}`), {
+        life : life
+    });
+}
+
 function transformObject(data) {
 
     if (!data) {

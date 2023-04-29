@@ -22,8 +22,13 @@
                         <th class="text-left">
                             ID
                         </th>
+                        
                         <th class="text-left">
                             LOGIN
+                        </th>
+
+                        <th class="text-left">
+                            LIFE
                         </th>
 
                         <th class="text-left">
@@ -39,6 +44,7 @@
                     <tr v-for="player in players" :key="player.id">
                         <td class="text-left">{{ player.id }}</td>
                         <td>{{ player.login }}</td>
+                        <td>{{ player.life }}</td>
                         <td>{{ player.isReady }}</td>
                         <td>
                             <v-btn icon="mdi-delete" @click="this.delete(player.id)"></v-btn>

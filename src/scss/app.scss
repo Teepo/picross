@@ -6,10 +6,6 @@ $red: #f65c5c;
 $selected: #2f425b;
 
 @media (prefers-color-scheme: dark) {
-    body {
-        background-color: #1c1c1e;
-        color: #fefefe;
-    }
     a {
         color: #5fa9ee;
     }
@@ -90,8 +86,9 @@ nav {
     font-weight: 500;
     font-family: system-ui;
 
-    background-color: #ebeff8;
-    border-radius: 5px;
+    background-color: #eaeef8;
+    border: 1px solid #bec5d4;
+    border-radius: 3px;
 
     display: flex;
     justify-content: flex-end;
@@ -102,13 +99,15 @@ nav {
     
     grid-area: v;
     justify-content: flex-end;
+
+    margin-right: 1px;
     
     .task {
         
         flex-direction: column;
         width: $cellSize;
         padding: 5px 0;
-        margin: 0 .1px;
+        margin-right: .1px;
         text-align: center;
 
         span {
@@ -121,11 +120,13 @@ nav {
     
     grid-area: h;
     flex-direction: column;
+
+    margin-top: 2px;
     
     .task {
         
         height: $cellSize;
-        margin: .1px 0;
+        margin-top: .1px;
         padding: 0 5px;
 
         span {
@@ -146,6 +147,7 @@ nav {
 
 .cells {
 
+    position: relative;
     grid-area: cell;
 
     display: grid;
@@ -153,21 +155,9 @@ nav {
     grid-template-rows: repeat(15, $cellSize);
 
     border: 2px solid #333;
-    border-radius: 5px;
 
     overflow: hidden;
     box-sizing: border-box;
-
-    &:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        border: 2px solid #333;
-        z-index: 1;
-    }
 
     &-wrapper {
         display: flex;
@@ -194,11 +184,11 @@ nav {
     }
 
     &--with-h-border {
-        border-left: 2px solid #333;
+        border-left: 1px solid #333;
     }
 
     &--with-v-border {
-        border-top: 2px solid #333;
+        border-top: 1px solid #333;
     }
 
     &--has-error {    
@@ -242,8 +232,8 @@ nav {
 }
 
 .u-icon-cross {
-    width: 30px;
-    height: 30px;
+    width: 18px;
+    height: 18px;
 }
 
 .u-icon-heart {

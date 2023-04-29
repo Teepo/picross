@@ -49,7 +49,7 @@
 
 <script>
 
-import { updatePlayerBoard, updatePlayerBoardCell } from './../database/firebase/index.js';
+import { updatePlayerBoard, updatePlayerBoardCell, updatePlayerLife } from './../database/firebase/index.js';
 
 import Cell from './../components/Cell.vue';
 import Life from './../components/Life.vue';
@@ -101,9 +101,6 @@ export default {
 
         this.$root.board = this.board;
         this.$root.gridSize = this.gridSize;
-        
-        this.$root.lifeCount = this.lifeCount;
-        this.$root.lifeLeft  = this.lifeLeft;
 
         let defaultPlayerBoard = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -127,6 +124,8 @@ export default {
             board : defaultPlayerBoard,
             life  : 3
         };
+
+        this.lifeLeft = this.player.life;
 
         if (this.isMultiplayer && !this.isDisabled) {
 
@@ -210,13 +209,23 @@ export default {
 
             heart && (heart.isDisabled = true);
 
+            updatePlayerLife({
+                id   : this.player.id,
+                life : this.lifeLeft
+            });
+
             if (this.lifeLeft <= 0) {
-                this.end()
+                this.gameover()
                 return;
             }
         },
 
-        end() {
+        win() {
+         
+            this.isDisabled = true;
+        },
+
+        gameover() {
             this.isDisabled = true;
         },
 

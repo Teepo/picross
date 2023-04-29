@@ -167,7 +167,7 @@ export default {
             }
 
             if (validCellCount === revealedCellCount) {
-                this.$parent.end();
+                this.$parent.win();
             }
         }
     }
