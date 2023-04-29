@@ -45,72 +45,42 @@ export const setEventAsView = async (eventId, playerId) => {
     return await push(ref(firebaseStore, `events/${eventId}/views`), playerId);
 }
 
-export const listenPlayers = callback => {
+export const onChildAddedPlayers = callback => {
 
     onChildAdded(ref(firebaseStore, 'users/'), player => {
         callback({
             player : {
                 ...{ id : player.key },
                 ...player.val()
-            },
-            eventType : 'onChildAdded'
+            }
         });
     });
+}
+
+export const onValuePlayers = callback => {
 
     onValue(ref(firebaseStore, 'users/'), players => {
         callback({
-            players : transformObject(players.val()),
-            eventType : 'onValue'
+            players : transformObject(players.val())
         });
     });
+}
+
+export const onChildRemovedPlayers = callback => {
 
     onChildRemoved(ref(firebaseStore, 'users/'), player => {
         callback({
             player : {
                 ...{ id : player.key },
                 ...player.val()
-            },
-            eventType : 'onChildRemoved'
+            }
         });
     });
 }
 
-export const onChildAddedPlayer = callback => {
-
-    onChildAdded(ref(firebaseStore, 'users/'), player => {
-        callback({
-            player : {
-                ...{ id : player.key },
-                ...player.val()
-            },
-            eventType : 'onChildAdded'
-        });
-    });
-}
-
-export const onChildAddedPlayerBoard = (id, callback) => {
+export const onValuePlayerBoard = (id, callback) => {
 
     onValue(ref(firebaseStore, `users/${id}/board`), board => {
-
-        callback(board.val());
-    });
-}
-
-export const listenPlayer = (id, callback) => {
-
-    onValue(ref(firebaseStore, `users/${id}`), event => {
-
-        callback({
-            ...{ id : event.key },
-            ...event.val()
-        });
-    });
-}
-
-export const listenPlayerBoard = (id, callback) => {
-
-    onValue(ref(firebaseStore, `users/${id}/board`), board => {
-
         callback(board.val());
     });
 }

@@ -99,7 +99,7 @@
 
 import {
     deletePlayer, deletePlayers,
-    listenPlayers, listenEvents, deleteEvents, sendEvent,
+    onValuePlayers, listenEvents, deleteEvents, sendEvent,
     giveBoardToClearToPlayers, resetPlayersBoard
 }
 from './../database/firebase/index.js';
@@ -116,17 +116,11 @@ export default {
 
     async mounted() {
 
-        listenPlayers(data => {
+        onValuePlayers(data => {
 
-            if (!this.players) {
-                this.players = [];
-            }
+            const { players } = data;
 
-            const { players, eventType } = data;
-
-            if (eventType === 'onValue') {
-                this.players = players ?? [];
-            }
+            this.players = players ?? [];
         })
 
         listenEvents(event => {

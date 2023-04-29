@@ -9,7 +9,7 @@
 
 <script>
 
-import { onChildAddedPlayer, onChildAddedPlayerBoard } from './../database/firebase/index.js';
+import { onChildAddedPlayers, onValuePlayerBoard } from './../database/firebase/index.js';
 
 import Picross from './../components/Picross.vue';
 
@@ -26,7 +26,7 @@ export default {
 
     mounted() {
 
-        onChildAddedPlayer(data => {
+        onChildAddedPlayers(data => {
 
             const { player } = data;
 
@@ -34,11 +34,7 @@ export default {
 
             this.players.push(player);
 
-            console.log('onChildAddedPlayer', player.id)
-
-            onChildAddedPlayerBoard(player.id, board => {
-                
-                console.log('onChildAddedPlayerBoard')
+            onValuePlayerBoard(player.id, board => {
 
                 const p = this.players.find(p => p.id === player.id);
                 
