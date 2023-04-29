@@ -5,6 +5,7 @@
 
             <v-container>
                 <v-btn class="bg-primary" @click="start">START GAME</v-btn>
+                <v-btn class="bg-primary ml-5" @click="reset">RESET GAME</v-btn>
                 <v-btn class="bg-primary ml-5" @click="return_to_lobby">RETURN TO LOBBY</v-btn>
             </v-container>
 
@@ -96,7 +97,12 @@
 
 <script>
 
-import { deletePlayer, deletePlayers, listenPlayers, listenEvents, deleteEvents, sendEvent, giveBoardToClearToPlayers } from './../database/firebase/index.js';
+import {
+    deletePlayer, deletePlayers,
+    listenPlayers, listenEvents, deleteEvents, sendEvent,
+    giveBoardToClearToPlayers, resetPlayersBoard
+}
+from './../database/firebase/index.js';
 
 export default {
 
@@ -141,6 +147,16 @@ export default {
 
             sendEvent({
                 type     : 'start',
+                senderId : 'admin'
+            });
+        },
+
+        async reset() {
+
+            await resetPlayersBoard(this.players.map(player => player.id));
+
+            sendEvent({
+                type     : 'reset',
                 senderId : 'admin'
             });
         },

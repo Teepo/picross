@@ -49,7 +49,7 @@
 
 <script>
 
-import { updatePlayerBoard } from './../database/firebase/index.js';
+import { updatePlayerBoard, updatePlayerBoardCell } from './../database/firebase/index.js';
 
 import Cell from './../components/Cell.vue';
 import Life from './../components/Life.vue';
@@ -225,6 +225,22 @@ export default {
             updatePlayerBoard({
                 id    : this.id,
                 board : this.player.board
+            });
+        },
+
+        /**
+         * @param {Number} x
+         * @param {Number} y
+         * @param {Number} state
+         *
+         */
+         updateCell(x = null, y = null, state = null) {
+
+            updatePlayerBoardCell({
+                id    : this.id,
+                x     : x,
+                y     : y,
+                state : state
             });
         }
     }

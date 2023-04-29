@@ -34,8 +34,12 @@ export default {
 
             this.players.push(player);
 
+            console.log('onChildAddedPlayer', player.id)
+
             onChildAddedPlayerBoard(player.id, board => {
                 
+                console.log('onChildAddedPlayerBoard')
+
                 const p = this.players.find(p => p.id === player.id);
                 
                 p.board = board;

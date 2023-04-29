@@ -138,7 +138,7 @@ export default {
 
                 this.$parent.player.board[this.x][this.y] = value;
 
-                this.$parent.updateBoard();
+                this.$parent.updateCell(this.x, this.y, this.isSelected ? 1 : -1);
 
                 this.checkIfBoardIsCleared();
             }
