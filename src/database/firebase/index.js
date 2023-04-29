@@ -10,6 +10,7 @@ export const firebaseStore = getDatabase(firebaseApp);
 import { Player } from './../../../service/player.js';
 
 import coherentRandom from './../../boards/coherentRandom';
+import magnet from './../../boards/magnet';
 
 export const addPlayer = async data => {
 
@@ -146,7 +147,7 @@ export const setPlayerReady = async (id, value) => {
 
 export const giveBoardToClearToPlayers = async ids => {
 
-    const boardToClear = coherentRandom(15, 15);
+    const boardToClear = magnet(15, 15);
 
     for await (const id of ids) {
 
@@ -156,21 +157,12 @@ export const giveBoardToClearToPlayers = async ids => {
     }
 }
 
-export const updatePlayerBoard = data => {
+export const updatePlayerBoard = async data => {
 
     const { id, board } = data;
 
-    update(ref(firebaseStore, `users/${id}`), {
+    await update(ref(firebaseStore, `users/${id}`), {
         board : board
-    });
-}
-
-export const updatePlayerBoardCell = async data => {
-
-    const { id, x, y, state } = data;
-
-    update(ref(firebaseStore, `users/${id}/board/${x}`), {
-        [y] : state
     });
 }
 

@@ -26,10 +26,6 @@ import Svg from './Svg.vue';
 
 import { AudioManager } from './../modules/AudioManager.js';
 
-const IS_NEUTRAL  = 1;
-const IS_SELECTED = 1;
-const IS_CROSSED  = -1;
-
 export default {
 
     components : { Svg },
@@ -69,22 +65,6 @@ export default {
         }
 
         this.$root.cells[this.x][this.y] = this;
-    },
-
-    updated() {
-
-        if (this.$parent.isDisabled) {
-            return;
-        }
-
-        const value = this.isSelected ? 1 : (this.isCrossed ? -1 : 0);
-
-        this.$parent.player.board[this.x][this.y] = value;
-
-        const state = this.isSelected ? IS_SELECTED : IS_CROSSED;
-
-        this.$parent.updateBoard();
-        this.$parent.updateCell(this.x, this.y, state);
     },
 
     methods : {
@@ -153,6 +133,13 @@ export default {
             }
 
             if (type === 'click' || type === 'contextmenu') {
+
+                const value = this.isSelected ? 1 : (this.isCrossed ? -1 : 0);
+
+                this.$parent.player.board[this.x][this.y] = value;
+
+                this.$parent.updateBoard();
+
                 this.checkIfBoardIsCleared();
             }
         },

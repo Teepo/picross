@@ -49,7 +49,7 @@
 
 <script>
 
-import { updatePlayerBoard, updatePlayerBoardCell } from './../database/firebase/index.js';
+import { updatePlayerBoard } from './../database/firebase/index.js';
 
 import Cell from './../components/Cell.vue';
 import Life from './../components/Life.vue';
@@ -128,7 +128,7 @@ export default {
             life  : 3
         };
 
-        if (this.isMultiplayer) {
+        if (this.isMultiplayer && !this.isDisabled) {
 
             // on récupère l'état du board
             this.updateBoard();
@@ -222,41 +222,9 @@ export default {
 
         updateBoard() {
 
-            if (this.isDisabled) {
-                return;
-            }
-
-            if (!this.isMultiplayer) {
-                return;
-            }
-
             updatePlayerBoard({
                 id    : this.id,
                 board : this.player.board
-            });
-        },
-
-        /**
-         * @param {Number} x
-         * @param {Number} y
-         * @param {Number} state
-         *
-         */
-         updateCell(x = null, y = null, state = null) {
-
-            if (this.isDisabled) {
-                return;
-            }
-
-            if (!this.isMultiplayer) {
-                return;
-            }
-
-            updatePlayerBoardCell({
-                id    : this.id,
-                x     : x,
-                y     : y,
-                state : state
             });
         }
     }
