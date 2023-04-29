@@ -217,7 +217,7 @@ export default {
         },
 
         end() {
-            this.isDisabled = true;
+            // this.isDisabled = true;
         },
 
         updateBoard() {
