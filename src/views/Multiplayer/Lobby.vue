@@ -3,6 +3,10 @@
     <v-container class="fill-height">
         <v-responsive class="d-flex align-center fill-height">
 
+            <v-container>
+                <strong class="text-center font-weight-bold d-block">La partie va bientôt commencer ...</strong>
+            </v-container>
+
             <v-container v-for="player in players" :key="player.id">
                 <v-card :theme="player.isReady ? 'is-ready' : ''">
                     <v-card-item>
