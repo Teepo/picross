@@ -5,6 +5,22 @@
         'picross'   : true,
         'picross--is-disabled' : this.isDisabled
     }" @end="end" v-if="this.player">
+
+        <v-overlay v-model="this.showGameOverOverlay" contained class="overlay-gameover align-center justify-center">
+            <v-container>
+                <v-btn icon="mdi-window-close" class="btn-close" density="compact" @click="this.showGameOverOverlay = false" color="red"></v-btn>
+                <v-card>
+                    <v-card-item>
+                        <v-card-text class="text-center">
+                            <strong class="text-h5 d-block">Plus de vie !</strong>
+
+                            <v-icon class="mt-5" icon="mdi-emoticon-poop" size="x-large"></v-icon>
+                        </v-card-text>
+                    </v-card-item>
+                </v-card>
+            </v-container>
+        </v-overlay>
+
         <div class="lifes">
             <template v-for="(x, index) in [...Array(this.lifeCount)]" :key="x">
                 <Life ref="hearts" :_is-disabled="index >= this.player.life" />
@@ -90,6 +106,8 @@ export default {
             board : this._board,
             lifeCount : 3,
             lifeLeft  : 3,
+
+            showGameOverOverlay : false
         };
     },
 
@@ -226,7 +244,8 @@ export default {
         },
 
         gameover() {
-            this.isDisabled = true;
+            this.isDisabled          = true;
+            this.showGameOverOverlay = true;
         },
 
         updateBoard() {

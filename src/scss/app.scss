@@ -254,8 +254,34 @@ nav {
     }
 }
 
+.v-overlay {
+
+    &__scrim {
+        background: #000;
+        opacity: .6;
+    }
+
+    .btn-close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        z-index: 1;
+    }
+}
+
+.overlay-gameover {
+
+    .mdi-emoticon-poop {
+        font-size: 5rem;
+    }
+}
+
+.mdi-emoticon-poop {
+    color: #86542b;
+}
+
 @keyframes animationHeartShaking {
-    0%        { transform: translate(0, 0); }
+    0%  { transform: translate(0, 0); }
     1%  { transform: translate(10px, 0); }
     3%  { transform: translate(0, 0); }
     5%  { transform: translate(10x, 0); }
@@ -310,4 +336,4 @@ nav {
         transform: scale(.9);
         box-shadow: 0 0 0 0 rgba($red, 0);
     }
-  }
+}
