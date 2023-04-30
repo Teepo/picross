@@ -141,7 +141,7 @@ export default {
                 // Update toute la board est un peu violent
                 // mais au moins permet de rattraper le vrai etat
                 // de la board du client en cas de desynchro.
-                this.$parent.updateBoard();
+                this.$parent.isMultiplayer && this.$parent.updateBoard();
                 // this.$parent.updateCell(this.x, this.y, this.isSelected ? 1 : -1);
 
                 this.checkIfBoardIsCleared();

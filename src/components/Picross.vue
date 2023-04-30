@@ -17,6 +17,7 @@
                             <v-icon class="mt-5" icon="mdi-emoticon-poop" size="x-large"></v-icon>
 
                             <v-btn v-if="!this.isMultiplayer" prepend-icon="mdi-restore" class="mt-8 bg-primary" @click="this.restart">Recommencer le niveau</v-btn>
+                            <v-btn v-if="!this.isMultiplayer" prepend-icon="mdi-autorenew" class="mt-8 bg-primary" @click="this.newGame">Jouer à un autre niveau</v-btn>
                         </v-card-text>
                     </v-card-item>
                 </v-card>
@@ -67,6 +68,8 @@
 </template>
 
 <script>
+
+import coherentRandom from './../boards/coherentRandom';
 
 import { updatePlayerBoard, updatePlayerBoardCell, updatePlayerLife } from './../database/firebase/index.js';
 
@@ -268,6 +271,14 @@ export default {
                 cell.isCrossed  = false;
                 cell.hasError   = false;
             });
+        },
+
+        newGame() {
+
+            this.restart();
+
+            this.board = coherentRandom(15, 15);
+            this.player.board = this.board;
         },
 
         updateBoard() {
