@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkpicross"]=self["webpackChunkpicross"]||[]).push([[700],{4869:function(r,n,s){s.r(n),s.d(n,{default:function(){return d}});var o=s(3396);function t(r,n,s,t,c,u){const a=(0,o.up)("Picross");return(0,o.wg)(),(0,o.j4)(a,{_board:this.board},null,8,["_board"])}var c=s(1490),u=s(9048),a={components:{Picross:u.Z},data(){return{board:(0,c.Z)(15,15)}}},e=s(89);const i=(0,e.Z)(a,[["render",t]]);var d=i}}]);
+//# sourceMappingURL=random-game.a7f8b904.js.map
