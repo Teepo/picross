@@ -15,6 +15,8 @@
                             <strong class="text-h5 d-block">Plus de vie !</strong>
 
                             <v-icon class="mt-5" icon="mdi-emoticon-poop" size="x-large"></v-icon>
+
+                            <v-btn v-if="!this.isMultiplayer" prepend-icon="mdi-restore" class="mt-8 bg-primary" @click="this.restart">Recommencer le niveau</v-btn>
                         </v-card-text>
                     </v-card-item>
                 </v-card>
@@ -55,6 +57,7 @@
                         :key="y" :_x="x" :_y="y"
                         :_isSelected="item === 1"
                         :_isCrossed="item === -1"
+                        ref="cells"
                         @decrease-life="decreaseLifeHandler"
                     />
                 </template>
@@ -140,7 +143,7 @@ export default {
 
         this.player = this._player ?? {
             board : defaultPlayerBoard,
-            life  : 3
+            life  : this.lifeLeft
         };
 
         this.lifeLeft = this.player.life;
@@ -227,7 +230,7 @@ export default {
 
             heart && (heart.isDisabled = true);
 
-            updatePlayerLife({
+            this.isMultiplayer && updatePlayerLife({
                 id   : this.player.id,
                 life : this.lifeLeft
             });
@@ -246,6 +249,25 @@ export default {
         gameover() {
             this.isDisabled          = true;
             this.showGameOverOverlay = true;
+        },
+
+        restart() {
+
+            this.isDisabled          = false;
+            this.showGameOverOverlay = false;
+
+            this.lifeLeft    = 3;
+            this.player.life = 3;
+
+            this.$refs.hearts.map(heart => {
+                heart.isDisabled = false;
+            });
+
+            this.$refs.cells.map(cell => {
+                cell.isSelected = false;
+                cell.isCrossed  = false;
+                cell.hasError   = false;
+            });
         },
 
         updateBoard() {
