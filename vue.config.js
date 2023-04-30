@@ -1,6 +1,10 @@
 import { defineConfig } from '@vue/cli-service';
 
+const publicPath = process.env.NODE_ENV === 'gh:prod' ? '/picross/' : '';
+
 export default defineConfig({
+
+  publicPath : publicPath,
 
   transpileDependencies: true,
 

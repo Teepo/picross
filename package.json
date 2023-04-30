@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "deploy": "gh-pages -d public",
+    "github-deploy": "yarn run build --env=gh:prod && gh-pages -d dist",
     "firebase-deploy": "yarn run build && firebase deploy",
     "jsdoc": "./node_modules/jsdoc/jsdoc.js -c ./.jsdoc.json",
     "ws": "node ./server/index.js"
